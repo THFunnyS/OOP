@@ -1,13 +1,14 @@
-public class MySecondClass {
+package myfirstpackage;
+public class myfirstpackage{
 	private int a;
 	private int b;
 
-	public MySecondClass(){
+	public myfirstpackage(){
 	a=0;
 	b=0;
 	}
 
-	public MySecondClass(int a, int b) {
+	public myfirstpackage(int a, int b) {
 	this.a=a;
 	this.b=b;
 	}
