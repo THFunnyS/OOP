@@ -1,7 +1,7 @@
 import myfirstpackage.*;
 public class MyFirstClass {
 	public static void main(String[] args) {
-		MySecondClass summ=new MySecondClass();
+		myfirstpackage summ=new myfirstpackage();
 		System.out.print("Сложение");
 		System.out.println();
 		for (int i = 1; i <= 8; i++) {
