@@ -1,15 +1,14 @@
 package functions;
 
 public class  CompositeFunction implements MathFunction{
-    private double firstFunction(double x){
-        return x*x;
-    }
+    private MathFunction firstFunction, secondFunction;
 
-    private double secondFunction(double x){
-        return Math.sqrt(x);
+    public CompositeFunction(MathFunction firstFunction, MathFunction secondFunction){
+        this.firstFunction=firstFunction;
+        this.secondFunction=secondFunction;
     }
 
     public double apply(double x){
-        return secondFunction(firstFunction(x));
+        return secondFunction.apply(firstFunction.apply(x));
     }
 }
