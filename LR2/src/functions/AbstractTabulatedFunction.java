@@ -7,7 +7,7 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction {
     abstract protected double extrapolateRight(double x);
 
     abstract protected double interpolate(double x, int floorIndex);
-    abstract protected double interpolate(double x, double leftX, double rightX, double leftY, double rightY);
+    protected double interpolate(double x, double leftX, double rightX, double leftY, double rightY);
     {
         return leftY + (rightY - leftY) / (rightX - leftX) * (x - leftX);
     }
