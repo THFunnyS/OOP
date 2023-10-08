@@ -3,8 +3,8 @@ package functions;
 import java.util.Arrays;
 
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable{
-    private final double[] xValues;
-    private final double[] yValues;
+    private double[] xValues;
+    private double[] yValues;
     protected int count;
 
     ArrayTabulatedFunction(double[] xValues, double[] yValues) {
