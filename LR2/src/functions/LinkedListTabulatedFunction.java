@@ -10,7 +10,7 @@ class Node{
         this.y=y;
     }
 }
-public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction{
+public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Removable{
     private Node head;
     protected int count;
     protected void addNode(double x,double y){
