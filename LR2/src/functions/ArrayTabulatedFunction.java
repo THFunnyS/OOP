@@ -5,6 +5,7 @@ import java.util.Arrays;
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     private final double[] xValues;
     private final double[] yValues;
+    protected int count;
 
     ArrayTabulatedFunction(double[] xValues, double[] yValues) {
         this.xValues = Arrays.copyOf(xValues, xValues.length);
