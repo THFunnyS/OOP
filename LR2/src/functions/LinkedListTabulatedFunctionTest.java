@@ -24,4 +24,15 @@ public class LinkedListTabulatedFunctionTest {
     public void testindexOfY(){
         Assert.assertEquals(2,testLink.indexOfY(6));
     }
+    @Test
+    public void testGetX() {
+        Assert.assertEquals(3.0, testLink.getX(2));
+        Assert.assertEquals(1.0,testLink.getX(0));
+    }
+
+    @Test
+    public void testGetY(){
+        Assert.assertEquals(4.0,testLink.getY(0));
+        Assert.assertEquals(6.0,testLink.getY(2));
+    }
 }
