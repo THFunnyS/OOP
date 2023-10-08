@@ -1,5 +1,5 @@
 package functions;
 
 public interface Insertable {
-    public void insert(double x,double y);
+    void insert(double x,double y);
 }
