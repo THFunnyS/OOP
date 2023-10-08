@@ -108,4 +108,11 @@ import junit.framework.Assert;
             assertNotEquals(0, arrayTabulatedFunction2.extrapolateRight(1));
         }
 
+        @Test
+        public void InsertTest() {
+            arrayTabulatedFunction.insert(3, 5);
+            assertEquals(5, arrayTabulatedFunction.getY(2));
+            arrayTabulatedFunction2.insert(3.5, 1);
+            assertEquals(3.5, arrayTabulatedFunction2.getX(1));
+        }
     }
