@@ -13,7 +13,7 @@ class Node{
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction{
     private Node head;
     protected int count;
-    private void addNode(double x,double y){
+    public void addNode(double x,double y){
         Node newNode= new Node(x,y);
         if (head==null){
             head=newNode;
