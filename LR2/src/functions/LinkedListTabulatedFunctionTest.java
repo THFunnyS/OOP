@@ -35,4 +35,11 @@ public class LinkedListTabulatedFunctionTest {
         Assert.assertEquals(4.0,testLink.getY(0));
         Assert.assertEquals(6.0,testLink.getY(2));
     }
+    @Test
+    public void testAddNode() {
+        testLink.addNode(7.5, 4);
+        assertEquals(4, testLink.getCount());
+        assertEquals(7.5, testLink.getX(3));
+        assertEquals(4, testLink.getY(3));
+    }
 }
