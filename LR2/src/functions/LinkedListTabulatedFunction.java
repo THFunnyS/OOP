@@ -201,4 +201,19 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         }
         return result;
     }
+
+    public void remove(int index) {
+        Node temp = head;
+        Node prev = null;
+        if (temp != null && temp.x == getX(index) && temp.y == getY(index)) {
+            head = temp.next;
+            return;
+        }
+        while (temp != null && temp.x != getX(index) && temp.y != getY(index)) {
+            prev = temp;
+            temp = temp.next;
+        }
+        if (temp == head) return;
+        prev.next = temp.next;
+    }
 }
