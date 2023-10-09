@@ -215,5 +215,6 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         }
         if (temp == head) return;
         prev.next = temp.next;
+        --count;
     }
 }
