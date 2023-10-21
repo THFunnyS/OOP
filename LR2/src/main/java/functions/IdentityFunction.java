@@ -6,7 +6,7 @@ public  class IdentityFunction implements MathFunction {
     }
 
     public String toString() {
-        return "IdentityFunction";
+        return "IdentityFunction{}";
     }
 
     public boolean equals(Object o) {

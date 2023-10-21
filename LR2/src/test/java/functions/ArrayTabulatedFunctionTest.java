@@ -115,4 +115,31 @@ import junit.framework.Assert;
             arrayTabulatedFunction2.insert(3.5, 1);
             assertEquals(3.5, arrayTabulatedFunction2.getX(1));
         }
+        @Test
+        public void toStringTest() {
+            assertEquals("(2.0;3.0) (2.5;4.0) (3.0;5.0) (3.5;6.0) (4.0;7.0) ", arrayTabulatedFunction.toString());
+            assertNotEquals("(0;0)", arrayTabulatedFunction.toString());
+
+            assertEquals("(6.0;3.0) ", arrayTabulatedFunction2.toString());
+            assertNotEquals("(0;0)", arrayTabulatedFunction2.toString());
+        }
+
+        @Test
+        public void equalsTest() {
+            ArrayTabulatedFunction arrayTabulatedFunctionTest = new ArrayTabulatedFunction(xValue, yValue);
+            assertTrue(arrayTabulatedFunction.equals(arrayTabulatedFunctionTest));
+        }
+
+        @Test
+        public void cloneTest() {
+            Object arrayTabulatedFunctionTest = arrayTabulatedFunction.clone();
+            assertTrue(arrayTabulatedFunction.equals(arrayTabulatedFunctionTest));
+        }
+
+        @Test
+        public void hashCodeTest() {
+            ArrayTabulatedFunction arrayTabulatedFunction3 = new ArrayTabulatedFunction(xValue, yValue);
+            assertEquals(arrayTabulatedFunction.hashCode(), arrayTabulatedFunction3.hashCode());
+            assertNotEquals(arrayTabulatedFunction.hashCode(), arrayTabulatedFunction2.hashCode());
+        }
     }
