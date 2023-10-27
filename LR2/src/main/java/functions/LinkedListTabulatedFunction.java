@@ -197,15 +197,16 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     protected double interpolate(double x, int floorIndex) {
-        if (head.next == head) {
-            return head.y;
-        } else {
+        if (floorIndex<0 && floorIndex>count-1) {
+            throw new IllegalArgumentException("Такого промежутка не существует");
+        } else if (x<=floorIndex && x>=floorIndex-1){
             double leftX = getX(floorIndex - 1);
             double rightX = getX(floorIndex);
             double leftY = getY(floorIndex - 1);
             double rightY = getY(floorIndex);
             return interpolate(x, leftX, rightX, leftY, rightY);
         }
+        else throw new IllegalArgumentException("Х лежит вне интервала");
     }
 
     protected double extrapolateLeft(double x) {

@@ -161,4 +161,13 @@ public class LinkedListTabulatedFunctionTest {
             testLink.floorIndexOfX(-1);
         });
     }
+    @Test
+    public void InterpolateExceptionTest(){
+        assertThrows(IllegalArgumentException.class,()->{
+            testLink.interpolate(2,4);
+        });
+        assertThrows(IllegalArgumentException.class,()->{
+            testLink.interpolate(4,2);
+        });
+    }
 }
