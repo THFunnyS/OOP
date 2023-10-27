@@ -1,5 +1,6 @@
 package functions;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Removable {
@@ -59,28 +60,34 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         ++count;
     }
 
-     LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
-        for (int i = 0; i < xValues.length; ++i)
-            addNode(xValues[i], yValues[i]);
-    }
+     public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
+         if (xValues.length < 2) throw new IllegalArgumentException("Длина меньше минимальной");
+         else {
+             for (int i = 0; i < xValues.length; ++i)
+                 addNode(xValues[i], yValues[i]);
+         }
+     }
 
-     LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
-        if (xFrom > xTo) {
-            double step = (xFrom - xTo) / (count - 1);
-            for (int i = 0; i < count; ++i) {
-                addNode((xTo + (i * step)), source.apply(xTo + (i * step)));
-            }
-        } else if (xTo > xFrom) {
-            double step = (xTo - xFrom) / count;
-            for (int i = 0; i < count; ++i) {
-                addNode((xFrom + (i * step)), source.apply(xFrom + (i * step)));
-            }
+     public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
+         if (count < 2) throw new IllegalArgumentException("Длина меньше минимальной");
+         else {
+             if (xFrom > xTo) {
+                 double step = (xFrom - xTo) / (count - 1);
+                 for (int i = 0; i < count; ++i) {
+                     addNode((xTo + (i * step)), source.apply(xTo + (i * step)));
+                 }
+             } else if (xTo > xFrom) {
+                 double step = (xTo - xFrom) / count;
+                 for (int i = 0; i < count; ++i) {
+                     addNode((xFrom + (i * step)), source.apply(xFrom + (i * step)));
+                 }
 
-        } else {
-            for (int i = 0; i < count; ++i) {
-                addNode(xFrom, source.apply(xFrom));
-            }
-        }
+             } else {
+                 for (int i = 0; i < count; ++i) {
+                     addNode(xFrom, source.apply(xFrom));
+                 }
+             }
+         }
     }
 
     public int getCount() {
@@ -96,29 +103,49 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     Node getNode(int index) {
-        if (index == 0) {
-            return head;
+        if (index <0 || index >count-1){
+            throw new IllegalArgumentException("Индекс вне интервала");
         }
-        Node temp = head;
-        for (int i = 0; i <= index; i++) {
-            temp = temp.next;
+        else {
+            if (index == 0) {
+                return head;
+            }
+            Node temp = head;
+            for (int i = 0; i <= index; i++) {
+                temp = temp.next;
+            }
+            return temp.prev;
         }
-        return temp.prev;
     }
 
     public double getX(int index) {
-        Node temp = getNode(index);
-        return temp.x;
+        if (index <0 || index >count-1){
+            throw new IllegalArgumentException("Индекс вне интервала");
+        }
+        else {
+            Node temp = getNode(index);
+            return temp.x;
+        }
     }
 
     public double getY(int index) {
-        Node temp = getNode(index);
-        return temp.y;
+        if (index <0 || index >count-1){
+            throw new IllegalArgumentException("Индекс вне интервала");
+        }
+        else {
+            Node temp = getNode(index);
+            return temp.y;
+        }
     }
 
     public void setY(int index, double value) {
-        Node temp = getNode(index);
-        temp.y = value;
+        if (index <0 || index >count-1){
+            throw new IllegalArgumentException("Индекс вне интервала");
+        }
+        else {
+            Node temp = getNode(index);
+            temp.y = value;
+        }
     }
 
     public int indexOfX(double x) {
@@ -132,7 +159,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         if (temp == head.prev) {
             if (temp.x == x) {
                 return index;
-            } else return -1;
+            } else throw new NoSuchElementException("Число не обнаружено");
         } else return index;
     }
 
@@ -147,14 +174,14 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         if (temp == head.prev) {
             if (temp.y == y) {
                 return index;
-            } else return -1;
+            } else throw new NoSuchElementException("Число не обнаружено");
         } else return index;
     }
 
     protected int floorIndexOfX(double x) {
         int index = 0;
         if (head.x > x) {
-            return 0;
+            throw new IllegalArgumentException("Число меньше левой границы");
         } else if (head.prev.x < x) {
             return count;
         } else {
@@ -179,7 +206,6 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             double rightY = getY(floorIndex);
             return interpolate(x, leftX, rightX, leftY, rightY);
         }
-
     }
 
     protected double extrapolateLeft(double x) {
@@ -220,19 +246,24 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     public void remove(int index) {
-        Node temp = head;
-        Node prev = null;
-        if (temp != null && temp.x == getX(index) && temp.y == getY(index)) {
-            head = temp.next;
-            return;
+        if (index <0 || index >count-1){
+            throw new IllegalArgumentException("Индекс вне интервала");
         }
-        while (temp != null && temp.x != getX(index) && temp.y != getY(index)) {
-            prev = temp;
-            temp = temp.next;
+        else {
+            Node temp = head;
+            Node prev = null;
+            if (temp != null && temp.x == getX(index) && temp.y == getY(index)) {
+                head = temp.next;
+                return;
+            }
+            while (temp != null && temp.x != getX(index) && temp.y != getY(index)) {
+                prev = temp;
+                temp = temp.next;
+            }
+            if (temp == head) return;
+            prev.next = temp.next;
+            --count;
         }
-        if (temp == head) return;
-        prev.next = temp.next;
-        --count;
     }
 
     public String toString() {

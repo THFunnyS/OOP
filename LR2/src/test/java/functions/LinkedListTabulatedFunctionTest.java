@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.Test;
 import junit.framework.Assert;
 
+import java.util.NoSuchElementException;
+
 public class LinkedListTabulatedFunctionTest {
     double[] arr1 = {1, 2, 3};
     double[] arr2 = {4, 5, 6};
@@ -22,23 +24,35 @@ public class LinkedListTabulatedFunctionTest {
     @Test
     public void testindexOfX() {
         Assert.assertEquals(1, testLink.indexOfX(2));
+        assertThrows(NoSuchElementException.class,()->{
+            testLink.indexOfX(4);
+        });
     }
 
     @Test
     public void testindexOfY() {
         Assert.assertEquals(2, testLink.indexOfY(6));
+        assertThrows(NoSuchElementException.class,()->{
+            testLink.indexOfY(3);
+        });
     }
 
     @Test
     public void testGetX() {
         Assert.assertEquals(3.0, testLink.getX(2));
         Assert.assertEquals(1.0, testLink.getX(0));
+        assertThrows(IllegalArgumentException.class,()->{
+            testLink.getY(3);
+        });
     }
 
     @Test
     public void testGetY() {
         Assert.assertEquals(4.0, testLink.getY(0));
         Assert.assertEquals(6.0, testLink.getY(2));
+        assertThrows(IllegalArgumentException.class,()->{
+            testLink.getY(3);
+        });
     }
 
     @Test
@@ -51,6 +65,9 @@ public class LinkedListTabulatedFunctionTest {
 
     @Test
     public void testRemove() {
+        assertThrows(IllegalArgumentException.class,()->{
+            testLink.remove(3);
+        });
         testLink.remove(1);
         assertEquals(3, testLink.getX(1));
         assertEquals(6, testLink.getY(1));
@@ -128,5 +145,20 @@ public class LinkedListTabulatedFunctionTest {
     public void ListCloneTest() {
         Object cloneList = testLink.clone();
         assertEquals(testLink, cloneList);
+    }
+
+    @Test
+    public void MinLengthTwoExceptionTest(){
+        double[] xValue={3};
+        double[] yValue={2};
+        assertThrows(IllegalArgumentException.class,()->{
+            LinkedListTabulatedFunction list=new LinkedListTabulatedFunction(xValue,yValue);});
+    }
+
+    @Test
+    public void floorIndexOfXExceptionTest(){
+        assertThrows(IllegalArgumentException.class,()->{
+            testLink.floorIndexOfX(-1);
+        });
     }
 }

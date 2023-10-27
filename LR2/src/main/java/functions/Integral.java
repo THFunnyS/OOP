@@ -5,22 +5,20 @@ public class Integral implements MathFunction {
     private static final double INCREMENT = 1E-4;
     private final double lowLim;
     private final double upLim;
-    private MathFunction Func;
+    private MathFunction func;
 
     public Integral(double lowLim, double upLim, MathFunction Func) {
         this.lowLim = lowLim;
         this.upLim = upLim;
-        this.Func = Func;
+        this.func = Func;
     }
 
     private double IntegralCount(double a, double b, MathFunction function) {
         double area = 0;
-        double modifier = 1;
         if (a > b) {
             double tempA = a;
             a = b;
             b = tempA;
-            modifier = -1;
         }
         for (double i = a + INCREMENT; i < b; i += INCREMENT) {
             double dFromA = i - a;
@@ -30,6 +28,6 @@ public class Integral implements MathFunction {
     }
 
     public double apply(double x) {
-        return IntegralCount(lowLim, upLim, Func);
+        return IntegralCount(lowLim, upLim, func);
     }
 }
