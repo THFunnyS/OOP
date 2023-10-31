@@ -2,45 +2,48 @@ package functions;
 
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Removable {
 
-     static class Node {
-         public Node next;
-         public Node prev;
-         public double x, y;
+    static class Node {
+        public Node next;
+        public Node prev;
+        public double x, y;
 
-         Node(double x, double y) {
-             this.x = x;
-             this.y = y;
-         }
+        Node(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
 
-         public String toString() {
-             String strX = String.valueOf(x);
-             String strY = String.valueOf(y);
-             return ("(" + strX + ";" + strY + "), где " + strX + " и " + strY + " - абсцисса и ордината точек соответственно ");
-         }
+        public String toString() {
+            String strX = String.valueOf(x);
+            String strY = String.valueOf(y);
+            return ("(" + strX + ";" + strY + "), где " + strX + " и " + strY + " - абсцисса и ордината точек соответственно ");
+        }
 
-         public boolean equals(Object o) {
-             if (this == o) return true;
-             if (getClass() != o.getClass()) return false;
-             Node node = (Node) o;
-             return (Double.compare(x, node.x) == Double.compare(y, node.y) == Objects.equals(next, node.next) == Objects.equals(prev, node.prev));
-         }
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (getClass() != o.getClass()) return false;
+            Node node = (Node) o;
+            return (Double.compare(x, node.x) == Double.compare(y, node.y) == Objects.equals(next, node.next) == Objects.equals(prev, node.prev));
+        }
 
-         public int hashCode() {
-             int result = 31 * Double.hashCode(x);
-             result = 31 * result + Double.hashCode(y);
-             return result;
-         }
+        public int hashCode() {
+            int result = 31 * Double.hashCode(x);
+            result = 31 * result + Double.hashCode(y);
+            return result;
+        }
 
-         public Object clone() {
-             Node cloneNode = new Node(x, y);
-             cloneNode.prev = this.prev;
-             cloneNode.next = this.next;
-             return cloneNode;
-         }
-     }
+        public Object clone() {
+            Node cloneNode = new Node(x, y);
+            cloneNode.prev = this.prev;
+            cloneNode.next = this.next;
+            return cloneNode;
+        }
+    }
+
     private Node head;
     protected int count;
 
@@ -60,34 +63,34 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         ++count;
     }
 
-     public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
-         if (xValues.length < 2) throw new IllegalArgumentException("Длина меньше минимальной");
-         else {
-             for (int i = 0; i < xValues.length; ++i)
-                 addNode(xValues[i], yValues[i]);
-         }
-     }
+    public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
+        if (xValues.length < 2) throw new IllegalArgumentException("Длина меньше минимальной");
+        else {
+            for (int i = 0; i < xValues.length; ++i)
+                addNode(xValues[i], yValues[i]);
+        }
+    }
 
-     public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
-         if (count < 2) throw new IllegalArgumentException("Длина меньше минимальной");
-         else {
-             if (xFrom > xTo) {
-                 double step = (xFrom - xTo) / (count - 1);
-                 for (int i = 0; i < count; ++i) {
-                     addNode((xTo + (i * step)), source.apply(xTo + (i * step)));
-                 }
-             } else if (xTo > xFrom) {
-                 double step = (xTo - xFrom) / count;
-                 for (int i = 0; i < count; ++i) {
-                     addNode((xFrom + (i * step)), source.apply(xFrom + (i * step)));
-                 }
+    public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
+        if (count < 2) throw new IllegalArgumentException("Длина меньше минимальной");
+        else {
+            if (xFrom > xTo) {
+                double step = (xFrom - xTo) / (count - 1);
+                for (int i = 0; i < count; ++i) {
+                    addNode((xTo + (i * step)), source.apply(xTo + (i * step)));
+                }
+            } else if (xTo > xFrom) {
+                double step = (xTo - xFrom) / count;
+                for (int i = 0; i < count; ++i) {
+                    addNode((xFrom + (i * step)), source.apply(xFrom + (i * step)));
+                }
 
-             } else {
-                 for (int i = 0; i < count; ++i) {
-                     addNode(xFrom, source.apply(xFrom));
-                 }
-             }
-         }
+            } else {
+                for (int i = 0; i < count; ++i) {
+                    addNode(xFrom, source.apply(xFrom));
+                }
+            }
+        }
     }
 
     public int getCount() {
@@ -103,10 +106,9 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     Node getNode(int index) {
-        if (index <0 || index >count-1){
+        if (index < 0 || index > count - 1) {
             throw new IllegalArgumentException("Индекс вне интервала");
-        }
-        else {
+        } else {
             if (index == 0) {
                 return head;
             }
@@ -119,30 +121,27 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     public double getX(int index) {
-        if (index <0 || index >count-1){
+        if (index < 0 || index > count - 1) {
             throw new IllegalArgumentException("Индекс вне интервала");
-        }
-        else {
+        } else {
             Node temp = getNode(index);
             return temp.x;
         }
     }
 
     public double getY(int index) {
-        if (index <0 || index >count-1){
+        if (index < 0 || index > count - 1) {
             throw new IllegalArgumentException("Индекс вне интервала");
-        }
-        else {
+        } else {
             Node temp = getNode(index);
             return temp.y;
         }
     }
 
     public void setY(int index, double value) {
-        if (index <0 || index >count-1){
+        if (index < 0 || index > count - 1) {
             throw new IllegalArgumentException("Индекс вне интервала");
-        }
-        else {
+        } else {
             Node temp = getNode(index);
             temp.y = value;
         }
@@ -197,16 +196,15 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     protected double interpolate(double x, int floorIndex) {
-        if (floorIndex<0 && floorIndex>count-1) {
+        if (floorIndex < 0 && floorIndex > count - 1) {
             throw new IllegalArgumentException("Такого промежутка не существует");
-        } else if (x<=floorIndex && x>=floorIndex-1){
+        } else if (x <= floorIndex && x >= floorIndex - 1) {
             double leftX = getX(floorIndex - 1);
             double rightX = getX(floorIndex);
             double leftY = getY(floorIndex - 1);
             double rightY = getY(floorIndex);
             return interpolate(x, leftX, rightX, leftY, rightY);
-        }
-        else throw new IllegalArgumentException("Х лежит вне интервала");
+        } else throw new IllegalArgumentException("Х лежит вне интервала");
     }
 
     protected double extrapolateLeft(double x) {
@@ -247,10 +245,9 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     public void remove(int index) {
-        if (index <0 || index >count-1){
+        if (index < 0 || index > count - 1) {
             throw new IllegalArgumentException("Индекс вне интервала");
-        }
-        else {
+        } else {
             Node temp = head;
             Node prev = null;
             if (temp != null && temp.x == getX(index) && temp.y == getY(index)) {
@@ -313,5 +310,26 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         }
         LinkedListTabulatedFunction cloneList = new LinkedListTabulatedFunction(arrX, arrY);
         return cloneList;
+    }
+
+    public Iterator<Point> iterator() {
+        return new Iterator<Point>() {
+            private Node node = head;
+
+            @Override
+            public boolean hasNext() {
+                return ((node.next != head) && (node.next != null));
+            }
+
+            @Override
+            public Point next() {
+                if (hasNext()) {
+                    Point point = new Point(node.x, node.y);
+                    node = node.next;
+                    return point;
+                } else throw new NoSuchElementException();
+            }
+
+        };
     }
 }

@@ -1,6 +1,7 @@
 package functions;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable {
     private double[] xValues;
@@ -186,5 +187,19 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         NewyValues[count - 1] = y;
         this.xValues = Arrays.copyOf(NewxValues, count);
         this.yValues = Arrays.copyOf(NewyValues, count);
+    }
+
+    public Iterator<Point> iterator(){
+        return new Iterator<Point>() {
+            @Override
+            public boolean hasNext() {
+                return false;
+            }
+
+            @Override
+            public Point next() {
+                return null;
+            }
+        };
     }
 }

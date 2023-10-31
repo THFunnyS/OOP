@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.Test;
 import junit.framework.Assert;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class LinkedListTabulatedFunctionTest {
@@ -24,7 +25,7 @@ public class LinkedListTabulatedFunctionTest {
     @Test
     public void testindexOfX() {
         Assert.assertEquals(1, testLink.indexOfX(2));
-        assertThrows(NoSuchElementException.class,()->{
+        assertThrows(NoSuchElementException.class, () -> {
             testLink.indexOfX(4);
         });
     }
@@ -32,7 +33,7 @@ public class LinkedListTabulatedFunctionTest {
     @Test
     public void testindexOfY() {
         Assert.assertEquals(2, testLink.indexOfY(6));
-        assertThrows(NoSuchElementException.class,()->{
+        assertThrows(NoSuchElementException.class, () -> {
             testLink.indexOfY(3);
         });
     }
@@ -41,7 +42,7 @@ public class LinkedListTabulatedFunctionTest {
     public void testGetX() {
         Assert.assertEquals(3.0, testLink.getX(2));
         Assert.assertEquals(1.0, testLink.getX(0));
-        assertThrows(IllegalArgumentException.class,()->{
+        assertThrows(IllegalArgumentException.class, () -> {
             testLink.getY(3);
         });
     }
@@ -50,7 +51,7 @@ public class LinkedListTabulatedFunctionTest {
     public void testGetY() {
         Assert.assertEquals(4.0, testLink.getY(0));
         Assert.assertEquals(6.0, testLink.getY(2));
-        assertThrows(IllegalArgumentException.class,()->{
+        assertThrows(IllegalArgumentException.class, () -> {
             testLink.getY(3);
         });
     }
@@ -65,7 +66,7 @@ public class LinkedListTabulatedFunctionTest {
 
     @Test
     public void testRemove() {
-        assertThrows(IllegalArgumentException.class,()->{
+        assertThrows(IllegalArgumentException.class, () -> {
             testLink.remove(3);
         });
         testLink.remove(1);
@@ -112,7 +113,7 @@ public class LinkedListTabulatedFunctionTest {
     }
 
     @Test
-    public void ArrayToString(){
+    public void ArrayToString() {
         assertEquals("(1.0;4.0) (2.0;5.0) (3.0;6.0)", testLink.toString());
     }
 
@@ -148,26 +149,46 @@ public class LinkedListTabulatedFunctionTest {
     }
 
     @Test
-    public void MinLengthTwoExceptionTest(){
-        double[] xValue={3};
-        double[] yValue={2};
-        assertThrows(IllegalArgumentException.class,()->{
-            LinkedListTabulatedFunction list=new LinkedListTabulatedFunction(xValue,yValue);});
+    public void MinLengthTwoExceptionTest() {
+        double[] xValue = {3};
+        double[] yValue = {2};
+        assertThrows(IllegalArgumentException.class, () -> {
+            LinkedListTabulatedFunction list = new LinkedListTabulatedFunction(xValue, yValue);
+        });
     }
 
     @Test
-    public void floorIndexOfXExceptionTest(){
-        assertThrows(IllegalArgumentException.class,()->{
+    public void floorIndexOfXExceptionTest() {
+        assertThrows(IllegalArgumentException.class, () -> {
             testLink.floorIndexOfX(-1);
         });
     }
+
     @Test
-    public void InterpolateExceptionTest(){
-        assertThrows(IllegalArgumentException.class,()->{
-            testLink.interpolate(2,4);
+    public void InterpolateExceptionTest() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            testLink.interpolate(2, 4);
         });
-        assertThrows(IllegalArgumentException.class,()->{
-            testLink.interpolate(4,2);
+        assertThrows(IllegalArgumentException.class, () -> {
+            testLink.interpolate(4, 2);
         });
+    }
+
+    @Test
+    public void IteratorExceptionTest() {
+        Iterator<Point> iterator = testLink.iterator();
+        LinkedListTabulatedFunction.Node node = testLink.getNode(0);
+        while (iterator.hasNext()) {
+            Point point = iterator.next();
+            assertEquals(node.x, point.x);
+            assertEquals(node.y, point.y);
+            node = node.next;
+        }
+        node = testLink.getNode(0);
+        for (Point point : testLink) {
+            assertEquals(node.x, point.x);
+            assertEquals(node.y, point.y);
+            node = node.next;
+        }
     }
 }
