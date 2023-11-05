@@ -19,14 +19,14 @@ public class TabulatedDifferentialOperatorTest {
     }
 
     @Test
-    public void devireTest() {
+    public void deriveTest() {
         double[] xValues = {2, 4, 6, 8};
         double[] yValues = {1, 3, 5, 7};
         LinkedListTabulatedFunctionFactory fact = new LinkedListTabulatedFunctionFactory();
         TabulatedDifferentialOperator operation = new TabulatedDifferentialOperator(fact);
 
         ArrayTabulatedFunction array = new ArrayTabulatedFunction(xValues, yValues);
-        TabulatedFunction func = operation.devire(array);
+        TabulatedFunction func = operation.derive(array);
         assertEquals(1, func.getY(0));
         assertEquals(1, func.getY(1));
         assertEquals(1, func.getY(2));
@@ -34,13 +34,13 @@ public class TabulatedDifferentialOperatorTest {
     }
 
     @Test
-    public void devireTest2() {
+    public void deriveTest2() {
         double[] xValues = {1, 2, 3, 4};
         double[] yValues = {5, 6, 7, 8};
         LinkedListTabulatedFunctionFactory fact = new LinkedListTabulatedFunctionFactory();
         TabulatedDifferentialOperator operation = new TabulatedDifferentialOperator(fact);
         LinkedListTabulatedFunction list = new LinkedListTabulatedFunction(xValues, yValues);
-        TabulatedFunction func = operation.devire(list);
+        TabulatedFunction func = operation.derive(list);
         assertEquals(1, func.getY(0));
         assertEquals(1, func.getY(1));
         assertEquals(1, func.getY(2));

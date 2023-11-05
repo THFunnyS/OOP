@@ -14,17 +14,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TabulatedFunctionOperationServiceTest {
-    double[] xValue = {1, 1.5, 2, 2.5, 3};
-    double[] yValue1 = {2, 3, 4, 5, 6};
-    double[] yValue2 = {8, 9, 10, 11, 12};
-    ArrayTabulatedFunction func1 = new ArrayTabulatedFunction(xValue, yValue1);
-    ArrayTabulatedFunction func2 = new ArrayTabulatedFunction(xValue, yValue2);
-    LinkedListTabulatedFunction func3 = new LinkedListTabulatedFunction(xValue, yValue1);
-    LinkedListTabulatedFunction func4 = new LinkedListTabulatedFunction(xValue, yValue2);
-    TabulatedFunctionOperationService tabulatedFunctionOperationService = new TabulatedFunctionOperationService();
-
     @Test
     public void asPointsTest() {
+        double[] xValue = {1, 1.5, 2, 2.5, 3};
+        double[] yValue1 = {2, 3, 4, 5, 6};
+        double[] yValue2 = {8, 9, 10, 11, 12};
+        ArrayTabulatedFunction func1 = new ArrayTabulatedFunction(xValue, yValue1);
         Point[] arrayOfPoints = TabulatedFunctionOperationService.asPoints(func1);
         int i = 0;
         for (Point point : arrayOfPoints) {
@@ -34,44 +29,42 @@ class TabulatedFunctionOperationServiceTest {
         }
     }
 
-    TabulatedFunctionFactory factory1 = new LinkedListTabulatedFunctionFactory();
-    TabulatedFunctionOperationService operation1 = new TabulatedFunctionOperationService(factory1);
-    TabulatedFunctionOperationService operation2 = new TabulatedFunctionOperationService();
-
+    double[] xValues = {1, 2, 3, 4};
+    double[] yValues = {5, 6, 7, 8};
+    LinkedListTabulatedFunction list = new LinkedListTabulatedFunction(xValues, yValues);
+    double[] xValues1 = {1, 2, 3, 4};
+    double[] yValues1 = {13, 14, 15, 16};
+    LinkedListTabulatedFunction list1 = new LinkedListTabulatedFunction(xValues1, yValues1);
+    TabulatedFunctionOperationService operation = new TabulatedFunctionOperationService();
     @Test
     public void addTest() {
-
-        TabulatedFunction result1 = operation1.add(func1, func2);
-        for (int i = 0; i < result1.getCount(); i++) {
-            assertEquals(yValue1[i] + yValue2[i], result1.getY(i));
-        }
-
-        TabulatedFunction result2 = operation2.add(func3, func4);
-        for (int i = 0; i < result2.getCount(); i++) {
-            assertEquals(yValue1[i] + yValue2[i], result2.getY(i));
-        }
-
-        TabulatedFunction result3 = operation2.add(func1, func3);
-        for (int i = 0; i < result3.getCount(); i++) {
-            assertEquals(yValue1[i] + yValue2[i], result3.getY(i));
+        TabulatedFunction func = operation.add(list, list1);
+        for (int i = 0; i != func.getCount(); i++) {
+            assertEquals(yValues[i] + yValues1[i], func.getY(i));
         }
     }
 
     @Test
-    void subtractionTest() {
-        TabulatedFunction result1 = operation1.subtraction(func1, func2);
-        for (int i = 0; i < result1.getCount(); i++) {
-            assertEquals(yValue1[i] - yValue2[i], result1.getY(i));
+    public void subtractTest() {
+        TabulatedFunction func = operation.subtraction(list, list1);
+        for (int i = 0; i != func.getCount(); i++) {
+            assertEquals(yValues[i] - yValues1[i], func.getY(i));
         }
+    }
 
-        TabulatedFunction result2 = operation2.subtraction(func4, func3);
-        for (int i = 0; i < result2.getCount(); i++) {
-            assertEquals(yValue1[i] - yValue2[i], result2.getY(i));
+    @Test
+    public void multiplicationTest() {
+        TabulatedFunction func = operation.multiplication(list, list1);
+        for (int i = 0; i != func.getCount(); i++) {
+            assertEquals(yValues[i] * yValues1[i], func.getY(i));
         }
+    }
 
-        TabulatedFunction result3 = operation2.subtraction(func1, func3);
-        for (int i = 0; i < result3.getCount(); i++) {
-            assertEquals(yValue1[i] - yValue2[i], result3.getY(i));
+    @Test
+    public void divisionTest() {
+        TabulatedFunction func = operation.division(list, list1);
+        for (int i = 0; i != func.getCount(); i++) {
+            assertEquals(yValues[i] / yValues1[i], func.getY(i));
         }
     }
 }
