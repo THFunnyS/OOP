@@ -1,6 +1,8 @@
 package functions;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import exceptions.InterpolationException;
 import org.junit.Test;
 import junit.framework.Assert;
 
@@ -119,8 +121,8 @@ public class LinkedListTabulatedFunctionTest {
 
     @Test
     public void ListEqualsTest() {
-        double[] arr3 = {2, 7, 1, 5};
-        double[] arr4 = {6, 8.5, 3, 5};
+        double[] arr3 = {2, 5, 6, 10};
+        double[] arr4 = {6, 8.5, 10, 11};
         LinkedListTabulatedFunction testLink2 = new LinkedListTabulatedFunction(arr3, arr4);
         LinkedListTabulatedFunction testLink3 = new LinkedListTabulatedFunction(arr2, arr1);
         LinkedListTabulatedFunction testLink4 = new LinkedListTabulatedFunction(arr1, arr2);
@@ -134,8 +136,8 @@ public class LinkedListTabulatedFunctionTest {
 
     @Test
     public void ListHashCodeTest() {
-        double[] arr3 = {2, 7, 1};
-        double[] arr4 = {6, 8.5, 3};
+        double[] arr3 = {2, 5, 10};
+        double[] arr4 = {6, 8.5, 10};
         LinkedListTabulatedFunction testLink2 = new LinkedListTabulatedFunction(arr1, arr2);
         LinkedListTabulatedFunction testLink3 = new LinkedListTabulatedFunction(arr3, arr4);
         assertEquals(testLink.hashCode(), testLink2.hashCode());
@@ -166,29 +168,30 @@ public class LinkedListTabulatedFunctionTest {
 
     @Test
     public void InterpolateExceptionTest() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            testLink.interpolate(2, 4);
-        });
-        assertThrows(IllegalArgumentException.class, () -> {
-            testLink.interpolate(4, 2);
+        assertThrows(InterpolationException.class, () -> {
+           testLink.interpolate(2.5, 2);
         });
     }
 
     @Test
-    public void IteratorExceptionTest() {
-        Iterator<Point> iterator = testLink.iterator();
-        LinkedListTabulatedFunction.Node node = testLink.getNode(0);
-        while (iterator.hasNext()) {
-            Point point = iterator.next();
-            assertEquals(node.x, point.x);
-            assertEquals(node.y, point.y);
-            node = node.next;
+    public void LinkedListIteratorTestException(){
+        Iterator<Point> iterator= testLink.iterator();
+        LinkedListTabulatedFunction.Node node=  testLink.getNode(0);
+        while(iterator.hasNext())
+        {
+            Point point=iterator.next();
+            assertEquals(node.x,point.x);
+            assertEquals(node.y,point.y);
+            node=node.next;
         }
-        node = testLink.getNode(0);
-        for (Point point : testLink) {
-            assertEquals(node.x, point.x);
-            assertEquals(node.y, point.y);
-            node = node.next;
+        node= testLink.getNode(0);
+        for(Point point: testLink)
+        {
+            assertEquals(node.x,point.x);
+            assertEquals(node.y,point.y);
+            node=node.next;
         }
+
     }
+
 }
