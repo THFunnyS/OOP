@@ -14,7 +14,7 @@ public class ArrayTabulatedFunctionFactoryTest {
     ArrayTabulatedFunction list = new ArrayTabulatedFunction(xValues, yValues);
 
     @Test
-    public void ListFactoryTest() {
+    public void ArrayFactoryTest() {
         ArrayTabulatedFunctionFactory listFactory = new ArrayTabulatedFunctionFactory();
         ArrayTabulatedFunctionFactory listFactory2 = new ArrayTabulatedFunctionFactory();
         double[] xValues2 = {3.4, 12, 9};
