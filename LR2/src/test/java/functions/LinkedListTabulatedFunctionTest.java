@@ -169,29 +169,25 @@ public class LinkedListTabulatedFunctionTest {
     @Test
     public void InterpolateExceptionTest() {
         assertThrows(InterpolationException.class, () -> {
-           testLink.interpolate(2.5, 2);
+            testLink.interpolate(2.5, 2);
         });
     }
 
     @Test
-    public void LinkedListIteratorTestException(){
-        Iterator<Point> iterator= testLink.iterator();
-        LinkedListTabulatedFunction.Node node=  testLink.getNode(0);
-        while(iterator.hasNext())
-        {
-            Point point=iterator.next();
-            assertEquals(node.x,point.x);
-            assertEquals(node.y,point.y);
-            node=node.next;
+    public void LinkedListIteratorTestException() {
+        Iterator<Point> iterator = testLink.iterator();
+        LinkedListTabulatedFunction.Node node = testLink.getNode(0);
+        while (iterator.hasNext()) {
+            Point point = iterator.next();
+            assertEquals(node.x, point.x);
+            assertEquals(node.y, point.y);
+            node = node.next;
         }
-        node= testLink.getNode(0);
-        for(Point point: testLink)
-        {
-            assertEquals(node.x,point.x);
-            assertEquals(node.y,point.y);
-            node=node.next;
+        node = testLink.getNode(0);
+        for (Point point : testLink) {
+            assertEquals(node.x, point.x);
+            assertEquals(node.y, point.y);
+            node = node.next;
         }
-
     }
-
 }

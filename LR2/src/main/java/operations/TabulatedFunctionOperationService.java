@@ -8,6 +8,7 @@ import functions.factory.TabulatedFunctionFactory;
 
 public class TabulatedFunctionOperationService {
     protected TabulatedFunctionFactory factory;
+
     public TabulatedFunctionOperationService(TabulatedFunctionFactory factory) {
         this.factory = factory;
     }
@@ -23,6 +24,7 @@ public class TabulatedFunctionOperationService {
     public TabulatedFunctionFactory getFactory() {
         return this.factory;
     }
+
     TabulatedFunction doOperation(TabulatedFunction a, TabulatedFunction b, BiOperation operation) {
 
         if (a.getCount() != b.getCount()) throw new InconsistentFunctionsException();
@@ -41,6 +43,7 @@ public class TabulatedFunctionOperationService {
             return factory.create(xValue, yValue);
         }
     }
+
     public static Point[] asPoints(TabulatedFunction tabulatedFunction) {
 
         Point[] asPointsArray = new Point[tabulatedFunction.getCount()];
@@ -51,6 +54,7 @@ public class TabulatedFunctionOperationService {
         }
         return asPointsArray;
     }
+
     public TabulatedFunction add(TabulatedFunction a, TabulatedFunction b) {
         return doOperation(a, b, Double::sum);
     }
@@ -58,8 +62,8 @@ public class TabulatedFunctionOperationService {
     public TabulatedFunction subtraction(TabulatedFunction a, TabulatedFunction b) {
         return doOperation(a, b, (u, v) -> u - v);
     }
+
     private interface BiOperation {
         double apply(double u, double v);
     }
-
 }

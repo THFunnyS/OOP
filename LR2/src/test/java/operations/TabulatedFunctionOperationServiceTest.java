@@ -26,7 +26,6 @@ class TabulatedFunctionOperationServiceTest {
     @Test
     public void asPointsTest() {
         Point[] arrayOfPoints = TabulatedFunctionOperationService.asPoints(func1);
-
         int i = 0;
         for (Point point : arrayOfPoints) {
             assertEquals(point.x, xValue[i]);
@@ -34,6 +33,7 @@ class TabulatedFunctionOperationServiceTest {
             ++i;
         }
     }
+
     TabulatedFunctionFactory factory1 = new LinkedListTabulatedFunctionFactory();
     TabulatedFunctionOperationService operation1 = new TabulatedFunctionOperationService(factory1);
     TabulatedFunctionOperationService operation2 = new TabulatedFunctionOperationService();
@@ -51,13 +51,10 @@ class TabulatedFunctionOperationServiceTest {
             assertEquals(yValue1[i] + yValue2[i], result2.getY(i));
         }
 
-
         TabulatedFunction result3 = operation2.add(func1, func3);
         for (int i = 0; i < result3.getCount(); i++) {
             assertEquals(yValue1[i] + yValue2[i], result3.getY(i));
         }
-
-
     }
 
     @Test
@@ -72,11 +69,9 @@ class TabulatedFunctionOperationServiceTest {
             assertEquals(yValue1[i] - yValue2[i], result2.getY(i));
         }
 
-
         TabulatedFunction result3 = operation2.subtraction(func1, func3);
         for (int i = 0; i < result3.getCount(); i++) {
             assertEquals(yValue1[i] - yValue2[i], result3.getY(i));
         }
     }
-
 }
