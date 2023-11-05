@@ -23,27 +23,31 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         }
     }
 
-    ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
-        xValues = new double[count];
-        yValues = new double[count];
-        this.count = count;
-        if (xFrom > xTo) {
-            double temp = xFrom;
-            xFrom = xTo;
-            xTo = temp;
-        }
-        double step = (xFrom + xTo) / (count - 1);
-        double xCordinate = xFrom;
+    public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
+        if (count < 2) {
+            throw new IllegalArgumentException("Length is smaller than min");
+        } else {
+            xValues = new double[count];
+            yValues = new double[count];
+            this.count = count;
+            if (xFrom > xTo) {
+                double temp = xFrom;
+                xFrom = xTo;
+                xTo = temp;
+            }
+            double step = (xFrom + xTo) / (count - 1);
+            double xCordinate = xFrom;
 
-        for (int i = 0; i < count; i++) {
-            xValues[i] = xCordinate;
-            yValues[i] = source.apply(xCordinate);
-            xCordinate += step;
+            for (int i = 0; i < count; i++) {
+                xValues[i] = xCordinate;
+                yValues[i] = source.apply(xCordinate);
+                xCordinate += step;
+            }
         }
     }
 
     protected int floorIndexOfX(double x) {
-        if (xValues[0] > x) return 0;
+        if (xValues[0] > x) throw new IllegalArgumentException("Число меньше левой границы");
         else if (xValues[count - 1] < x) return count;
         else {
             for (int index = 0; ; index++) {
@@ -97,6 +101,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         }
         return result;
     }
+
     @Override
     public String toString() {
         String xAndYStr = "";
@@ -107,10 +112,12 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         }
         return xAndYStr;
     }
+
     @Override
     public boolean equals(Object o) {
         return this.getClass() == o.getClass() && Arrays.equals(((ArrayTabulatedFunction) o).xValues, xValues) && Arrays.equals(((ArrayTabulatedFunction) o).yValues, yValues);
     }
+
     @Override
     public int hashCode() {
         int result = 0;
@@ -123,6 +130,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         }
         return result;
     }
+
     @Override
     public Object clone() {
         return new ArrayTabulatedFunction(xValues.clone(), yValues.clone());
@@ -133,15 +141,24 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     public double getX(int index) {
-        return xValues[index];
+        if (index < 0 || index > count - 1) throw new IllegalArgumentException("Индекс вне интервала");
+        else {
+            return xValues[index];
+        }
     }
 
     public double getY(int index) {
-        return yValues[index];
+        if (index < 0 || index > count - 1) throw new IllegalArgumentException("Индекс вне интервала");
+        else {
+            return yValues[index];
+        }
     }
 
     public void setY(int index, double value) {
-        yValues[index] = value;
+        if (index < 0 || index > count - 1) throw new IllegalArgumentException("Индекс вне интервала");
+        else {
+            yValues[index] = value;
+        }
     }
 
     public int indexOfX(double x) {
@@ -150,7 +167,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             if (xValues[index] == x) return index;
             else index++;
         }
-        return -1;
+        throw new NoSuchElementException("Число не обнаружено");
     }
 
     public int indexOfY(double y) {
@@ -159,7 +176,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             if (yValues[index] == y) return index;
             else index++;
         }
-        return -1;
+        throw new NoSuchElementException("Число не обнаружено");
     }
 
     public double leftBound() {
