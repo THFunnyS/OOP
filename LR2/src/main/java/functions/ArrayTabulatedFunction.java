@@ -1,7 +1,10 @@
 package functions;
 
+import exceptions.InterpolationException;
+
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable {
     private double[] xValues;
@@ -9,9 +12,15 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     protected int count;
 
     public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
-        this.xValues = Arrays.copyOf(xValues, xValues.length);
-        this.yValues = Arrays.copyOf(yValues, yValues.length);
-        count = xValues.length;
+        if (xValues.length < 2 || yValues.length < 2) {
+            throw new IllegalArgumentException("Length is smaller than min");
+        } else {
+            checkLengthIsTheSame(xValues, yValues);
+            checkSorted(xValues);
+            this.xValues = Arrays.copyOf(xValues, xValues.length);
+            this.yValues = Arrays.copyOf(yValues, yValues.length);
+            this.count = xValues.length;
+        }
     }
 
     ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
@@ -45,40 +54,32 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     protected double interpolate(double x, int floorIndex) {
-        if (count == 1) {
-            return yValues[0];
-        } else {
+        if (x < floorIndex && x > floorIndex - 1) {
+
             double leftX = getX(floorIndex - 1);
             double rightX = getX(floorIndex);
             double leftY = getY(floorIndex - 1);
             double rightY = getY(floorIndex);
             return interpolate(x, leftX, rightX, leftY, rightY);
-        }
+
+        } else throw new InterpolationException("X не лежит в интервале");
 
     }
 
     protected double extrapolateLeft(double x) {
-        if (count == 1) {
-            return yValues[0];
-        } else {
-            return (yValues[0] + (((yValues[1] - yValues[0]) / (xValues[1] - xValues[0])) * (x - xValues[0])));
-        }
+        if (count == 1) return yValues[0];
+        else return (yValues[0] + (((yValues[1] - yValues[0]) / (xValues[1] - xValues[0])) * (x - xValues[0])));
     }
 
     protected double extrapolateRight(double x) {
-        if (count == 1) {
-            return yValues[0];
-        } else {
+        if (count == 1) return yValues[0];
+        else
             return (yValues[count - 2] + (((yValues[count - 1] - yValues[count - 2]) / (xValues[count - 1] - xValues[count - 2])) * (x - xValues[count - 2])));
-        }
     }
 
     protected double interpolate(double x, double leftX, double rightX, double leftY, double rightY) {
-        if (count == 1) {
-            return yValues[0];
-        } else {
-            return (leftY + (((rightY - leftY) / (rightX - leftX)) * (x - leftX)));
-        }
+        if (count == 1) return yValues[0];
+        else return (leftY + (((rightY - leftY) / (rightX - leftX)) * (x - leftX)));
     }
 
     public double apply(double x) {
@@ -108,9 +109,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
     @Override
     public boolean equals(Object o) {
-        return this.getClass() == o.getClass() &&
-                Arrays.equals(((ArrayTabulatedFunction) o).xValues, xValues) &&
-                Arrays.equals(((ArrayTabulatedFunction) o).yValues, yValues);
+        return this.getClass() == o.getClass() && Arrays.equals(((ArrayTabulatedFunction) o).xValues, xValues) && Arrays.equals(((ArrayTabulatedFunction) o).yValues, yValues);
     }
     @Override
     public int hashCode() {
@@ -189,16 +188,23 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         this.yValues = Arrays.copyOf(NewyValues, count);
     }
 
-    public Iterator<Point> iterator(){
+    @Override
+    public Iterator<Point> iterator() {
         return new Iterator<Point>() {
+            private int i = 0;
+
             @Override
             public boolean hasNext() {
-                return false;
+                return (i < count);
             }
 
             @Override
             public Point next() {
-                return null;
+                if (hasNext()) {
+                    Point point = new Point(xValues[i], yValues[i]);
+                    ++i;
+                    return point;
+                } else throw new NoSuchElementException();
             }
         };
     }

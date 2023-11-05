@@ -1,9 +1,10 @@
 package functions;
 
+import exceptions.InterpolationException;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
+
 
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Removable {
 
@@ -64,13 +65,16 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
-        if (xValues.length < 2) throw new IllegalArgumentException("Длина меньше минимальной");
-        else {
-            for (int i = 0; i < xValues.length; ++i)
+        if (xValues.length < 2) {
+            throw new IllegalArgumentException("Длина меньше минимальной");
+        } else {
+            checkLengthIsTheSame(xValues, yValues);
+            checkSorted(xValues);
+            for (int i = 0; i < xValues.length; ++i) {
                 addNode(xValues[i], yValues[i]);
+            }
         }
     }
-
     public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
         if (count < 2) throw new IllegalArgumentException("Длина меньше минимальной");
         else {
@@ -196,15 +200,18 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     protected double interpolate(double x, int floorIndex) {
-        if (floorIndex < 0 && floorIndex > count - 1) {
-            throw new IllegalArgumentException("Такого промежутка не существует");
-        } else if (x <= floorIndex && x >= floorIndex - 1) {
+        if (floorIndex < 0 && floorIndex > count - 1)
+            throw new IllegalArgumentException("Нужного промежутка не существует");
+        if (x <= floorIndex && x >= floorIndex - 1) {
+
             double leftX = getX(floorIndex - 1);
             double rightX = getX(floorIndex);
             double leftY = getY(floorIndex - 1);
             double rightY = getY(floorIndex);
             return interpolate(x, leftX, rightX, leftY, rightY);
-        } else throw new IllegalArgumentException("Х лежит вне интервала");
+
+        } else throw new InterpolationException("X не лежит в интервале");
+
     }
 
     protected double extrapolateLeft(double x) {
