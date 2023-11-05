@@ -19,7 +19,7 @@ public class TabulatedDifferentialOperatorTest {
     }
 
     @Test
-    public void devireTest() {
+    public void deriveTest() {
         double[] xValues = {2, 4, 6, 8};
         double[] yValues = {1, 3, 5, 7};
         LinkedListTabulatedFunctionFactory fact = new LinkedListTabulatedFunctionFactory();
@@ -34,7 +34,7 @@ public class TabulatedDifferentialOperatorTest {
     }
 
     @Test
-    public void devireTest2() {
+    public void deriveTest2() {
         double[] xValues = {1, 2, 3, 4};
         double[] yValues = {5, 6, 7, 8};
         LinkedListTabulatedFunctionFactory fact = new LinkedListTabulatedFunctionFactory();

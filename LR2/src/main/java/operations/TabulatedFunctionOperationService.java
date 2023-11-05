@@ -45,7 +45,6 @@ public class TabulatedFunctionOperationService {
     }
 
     public static Point[] asPoints(TabulatedFunction tabulatedFunction) {
-
         Point[] asPointsArray = new Point[tabulatedFunction.getCount()];
         int i = 0;
         for (Point point : tabulatedFunction) {
@@ -55,12 +54,24 @@ public class TabulatedFunctionOperationService {
         return asPointsArray;
     }
 
-    public TabulatedFunction add(TabulatedFunction a, TabulatedFunction b) {
-        return doOperation(a, b, Double::sum);
+    public TabulatedFunction add(TabulatedFunction firstFunc, TabulatedFunction secondFunc) {
+        BiOperation operation = (u, v) -> u + v;
+        return doOperation(firstFunc, secondFunc, operation);
     }
 
-    public TabulatedFunction subtraction(TabulatedFunction a, TabulatedFunction b) {
-        return doOperation(a, b, (u, v) -> u - v);
+    public TabulatedFunction subtraction(TabulatedFunction firstFunc, TabulatedFunction secondFunc) {
+        BiOperation operation = (u, v) -> u - v;
+        return doOperation(firstFunc, secondFunc, operation);
+    }
+
+    public TabulatedFunction multiplication(TabulatedFunction firstFunc, TabulatedFunction secondFunc) {
+        BiOperation operation = (u, v) -> u * v;
+        return doOperation(firstFunc, secondFunc, operation);
+    }
+
+    public TabulatedFunction division(TabulatedFunction firstFunc, TabulatedFunction secondFunc) {
+        BiOperation operation = (u, v) -> u / v;
+        return doOperation(firstFunc, secondFunc, operation);
     }
 
     private interface BiOperation {

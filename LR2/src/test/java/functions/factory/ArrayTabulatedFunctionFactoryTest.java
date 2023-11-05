@@ -17,7 +17,7 @@ public class ArrayTabulatedFunctionFactoryTest {
     public void ArrayFactoryTest() {
         ArrayTabulatedFunctionFactory listFactory = new ArrayTabulatedFunctionFactory();
         ArrayTabulatedFunctionFactory listFactory2 = new ArrayTabulatedFunctionFactory();
-        double[] xValues2 = {3.4, 12, 9};
+        double[] xValues2 = {3.4, 9, 12};
         double[] yValues2 = {1.76, 4, 5.1};
         boolean test = list.getClass() == (listFactory.create(xValues, yValues)).getClass();
         boolean test2 = list.getClass() == (listFactory2.create(xValues2, yValues2)).getClass();
