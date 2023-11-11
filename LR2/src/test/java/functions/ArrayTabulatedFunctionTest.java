@@ -14,7 +14,6 @@ public class ArrayTabulatedFunctionTest {
     double[] yValue = {2, 3, 4, 5, 6};
     ArrayTabulatedFunction arrayTabulatedFunction = new ArrayTabulatedFunction(xValue, yValue);
 
-
     @Test
     public void getCount() {
         assertEquals(5, arrayTabulatedFunction.getCount());
@@ -56,22 +55,16 @@ public class ArrayTabulatedFunctionTest {
     public void indexOfX() {
         assertEquals(1, arrayTabulatedFunction.indexOfX(1.5));
         assertNotEquals(0, arrayTabulatedFunction.indexOfX(1.5));
-
-
     }
 
     @Test
     public void indexOfY() {
         assertEquals(1, arrayTabulatedFunction.indexOfY(3));
         assertNotEquals(0, arrayTabulatedFunction.indexOfY(3));
-
-
     }
 
     @Test
     public void floorIndexOfX() {
-
-
         assertEquals(5, arrayTabulatedFunction.floorIndexOfX(10));
         assertNotEquals(0, arrayTabulatedFunction.floorIndexOfX(10));
 
@@ -86,16 +79,12 @@ public class ArrayTabulatedFunctionTest {
     public void interpolate() {
         assertEquals(3.4, arrayTabulatedFunction.interpolate(1.7, 2));
         assertNotEquals(0, arrayTabulatedFunction.interpolate(1.7, 2));
-
-
     }
 
     @Test
     public void extrapolateLeft() {
         assertEquals(-10, arrayTabulatedFunction.extrapolateLeft(-5));
         assertNotEquals(0, arrayTabulatedFunction.extrapolateLeft(-5));
-
-
     }
 
     @Test
