@@ -24,7 +24,22 @@ abstract class AbstractTabulatedFunction implements TabulatedFunction {
     public static void checkSorted(double[] xValues) {
         for (int i = 0; i < xValues.length - 1; i++) {
             if (xValues[i] > xValues[i + 1]) throw new ArrayIsNotSortedException("массив не отсортирован");
-
         }
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" size = ");
+        sb.append(getCount());
+        sb.append("\n");
+        for (Point point : this) {
+            sb.append("[");
+            sb.append(point.x);
+            sb.append("; ");
+            sb.append(point.y);
+            sb.append("]\n");
+        }
+        return sb.toString();
     }
 }

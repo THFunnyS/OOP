@@ -271,7 +271,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         }
     }
 
-    public String toString() {
+    /*public String toString() {
         String result = "";
         Node temp = head;
         while (temp != head.prev) {
@@ -282,7 +282,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         }
         result += "(" + String.valueOf(head.prev.x) + ";" + String.valueOf(head.prev.y) + ")";
         return result;
-    }
+    } */
 
     public boolean equals(Object o) {
         if (this == o) return true;

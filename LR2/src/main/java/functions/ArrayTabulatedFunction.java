@@ -102,7 +102,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         return result;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         String xAndYStr = "";
         for (int i = 0; i < count; i++) {
@@ -111,7 +111,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             xAndYStr += "(" + StrX + ";" + StrY + ")" + " ";
         }
         return xAndYStr;
-    }
+    } */
 
     @Override
     public boolean equals(Object o) {

@@ -114,10 +114,10 @@ public class LinkedListTabulatedFunctionTest {
         assertEquals(node, nodeCopy);
     }
 
-    @Test
+    /* @Test
     public void ArrayToString() {
         assertEquals("(1.0;4.0) (2.0;5.0) (3.0;6.0)", testLink.toString());
-    }
+    } */
 
     @Test
     public void ListEqualsTest() {
@@ -189,5 +189,13 @@ public class LinkedListTabulatedFunctionTest {
             assertEquals(node.y, point.y);
             node = node.next;
         }
+    }
+
+    @Test
+    public void toSting2Test() {
+        double[] xValueS = {0, 0.5, 1};
+        double[] yValueS = {0, 0.25, 1};
+        LinkedListTabulatedFunction arrTest = new LinkedListTabulatedFunction(xValueS, yValueS);
+        assertEquals(arrTest.toString(), "LinkedListTabulatedFunction size = 3\n[0.0; 0.0]\n[0.5; 0.25]\n[1.0; 1.0]\n");
     }
 }

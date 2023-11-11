@@ -104,11 +104,11 @@ public class ArrayTabulatedFunctionTest {
         assertNotEquals(0, arrayTabulatedFunction.extrapolateRight(10));
     }
 
-    @Test
+    /*@Test
     public void toStringTest() {
         assertEquals("(1.0;2.0) (1.5;3.0) (2.0;4.0) (2.5;5.0) (3.0;6.0) ", arrayTabulatedFunction.toString());
         assertNotEquals("(0;0)", arrayTabulatedFunction.toString());
-    }
+    } */
 
     @Test
     public void equalsTest() {
@@ -182,6 +182,13 @@ public class ArrayTabulatedFunctionTest {
             assertEquals(yValue[i], point.y);
             ++i;
         }
+    }
 
+    @Test
+    public void toSting2Test() {
+        double[] xValueS = {0, 0.5, 1};
+        double[] yValueS = {0, 0.25, 1};
+        ArrayTabulatedFunction arrTest = new ArrayTabulatedFunction(xValueS, yValueS);
+        assertEquals(arrTest.toString(), "ArrayTabulatedFunction size = 3\n[0.0; 0.0]\n[0.5; 0.25]\n[1.0; 1.0]\n");
     }
 }
