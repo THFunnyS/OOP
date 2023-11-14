@@ -9,14 +9,14 @@ import java.text.ParseException;
 import java.util.Locale;
 
 public final class FunctionsIO {
-    private FunctionsIO(){
+    private FunctionsIO() {
         throw new UnsupportedOperationException("FunctionsIO не может иметь наследников и экземпляров");
     }
 
-    static void writeTabulatedFunction(BufferedOutputStream outputStream, TabulatedFunction function)throws IOException{
-        DataOutputStream out=new DataOutputStream(outputStream);
+    static void writeTabulatedFunction(BufferedOutputStream outputStream, TabulatedFunction function) throws IOException {
+        DataOutputStream out = new DataOutputStream(outputStream);
         out.writeInt(function.getCount());
-        for (Point point:function){
+        for (Point point : function) {
             out.writeDouble(point.x);
             out.writeDouble(point.y);
         }
@@ -40,7 +40,7 @@ public final class FunctionsIO {
         return factory.create(xValues, yValues);
     }
 
-    public static TabulatedFunction readTabulatedFunction(BufferedInputStream inputStream, TabulatedFunctionFactory factory)throws IOException {
+    public static TabulatedFunction readTabulatedFunction(BufferedInputStream inputStream, TabulatedFunctionFactory factory) throws IOException {
         DataInputStream in = new DataInputStream(inputStream);
         int count = in.readInt();
         double[] xValues = new double[count];
@@ -50,5 +50,10 @@ public final class FunctionsIO {
             yValues[i] = in.readDouble();
         }
         return factory.create(xValues, yValues);
+    }
+
+    public static TabulatedFunction deserialize(BufferedInputStream stream) throws IOException, ClassNotFoundException {
+        ObjectInputStream objectInputStream = new ObjectInputStream(stream);
+        return (TabulatedFunction) objectInputStream.readObject();
     }
 }
