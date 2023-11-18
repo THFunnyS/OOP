@@ -6,10 +6,9 @@ import functions.factory.LinkedListTabulatedFunctionFactory;
 import functions.factory.TabulatedFunctionFactory;
 import operations.TabulatedDifferentialOperator;
 
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-
-import java.io.*;
 public class TabulatedFunctionFileInputStream {
     public static void main(String args[]) {
         try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream("input/binary function.bin"))) {

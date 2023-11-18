@@ -22,7 +22,14 @@ public final class FunctionsIO {
         }
         out.flush();
     }
-
+    public static void writeTabulatedFunction(BufferedWriter writer, TabulatedFunction function) {
+        PrintWriter printWriter = new PrintWriter(writer);
+        printWriter.println(function.getCount());
+        for (Point point : function) {
+            printWriter.printf("%f %f\n", point.x, point.y);
+        }
+        printWriter.flush();
+    }
     public static TabulatedFunction readTabulatedFunction(BufferedReader reader, TabulatedFunctionFactory factory) throws IOException {
         int count = Integer.parseInt(reader.readLine());
         double[] xValues = new double[count];
@@ -51,7 +58,11 @@ public final class FunctionsIO {
         }
         return factory.create(xValues, yValues);
     }
-
+    public static void serialize(BufferedOutputStream stream, TabulatedFunction function) throws IOException {
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(stream);
+        objectOutputStream.writeObject(function);
+        objectOutputStream.flush();
+    }
     public static TabulatedFunction deserialize(BufferedInputStream stream) throws IOException, ClassNotFoundException {
         ObjectInputStream objectInputStream = new ObjectInputStream(stream);
         return (TabulatedFunction) objectInputStream.readObject();
