@@ -8,8 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 public class TabulatedFunctionFileOutputStream {
     public static void main(String args[]) {
-        try (BufferedOutputStream arrFileOut = new BufferedOutputStream(new FileOutputStream("output/array functions.bin"));
-             BufferedOutputStream listFileOut = new BufferedOutputStream(new FileOutputStream("output/linked list functions.bin"))) {
+        try (BufferedOutputStream arrFileOut = new BufferedOutputStream(new FileOutputStream("C:\\Users\\User\\IdeaProjects\\LRGit\\LR2\\output\\array functions.bin"));
+             BufferedOutputStream listFileOut = new BufferedOutputStream(new FileOutputStream("C:\\Users\\User\\IdeaProjects\\LRGit\\LR2\\output\\linked list functions.bin"))) {
             double[] xValues = {1, 2, 3, 4};
             double[] yValues = {5, 6, 7, 8};
             ArrayTabulatedFunction arr = new ArrayTabulatedFunction(xValues, yValues);

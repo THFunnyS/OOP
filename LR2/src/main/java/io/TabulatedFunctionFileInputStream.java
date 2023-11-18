@@ -11,7 +11,7 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 public class TabulatedFunctionFileInputStream {
     public static void main(String args[]) {
-        try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream("input/binary function.bin"))) {
+        try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream("C:\\Users\\User\\IdeaProjects\\LRGit\\LR2\\input\\array functions.bin"))) {
             TabulatedFunctionFactory factory = new ArrayTabulatedFunctionFactory();
             TabulatedFunction function = FunctionsIO.readTabulatedFunction(inputStream, factory);
             System.out.println(function);

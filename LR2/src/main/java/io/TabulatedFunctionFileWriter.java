@@ -11,8 +11,8 @@ import java.io.IOException;
 public class TabulatedFunctionFileWriter {
     public static void main(String[] args) {
         try {
-            try (BufferedWriter writerArray = new BufferedWriter(new FileWriter("C:\\Users\\АДМИН\\IdeaProjects\\OOP\\LR2\\output\\array function.txt"));
-                 BufferedWriter writerLinked = new BufferedWriter(new FileWriter("C:\\Users\\АДМИН\\IdeaProjects\\OOP\\LR2\\output\\linked list function.txt"))) {
+            try (BufferedWriter writerArray = new BufferedWriter(new FileWriter("C:\\Users\\User\\IdeaProjects\\LRGit\\LR2\\output\\array function.txt"));
+                 BufferedWriter writerLinked = new BufferedWriter(new FileWriter("C:\\Users\\User\\IdeaProjects\\LRGit\\LR2\\output\\linked list function.txt"))) {
 
                 double[] xValue = {1, 1.5, 2, 2.5, 3};
                 double[] yValue = {2, 3, 4, 5, 6};

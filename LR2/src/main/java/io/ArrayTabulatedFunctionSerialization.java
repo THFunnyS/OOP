@@ -9,7 +9,7 @@ import java.io.*;
 public class ArrayTabulatedFunctionSerialization {
     public static void main(String[] args) {
         try {
-            try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream("C:\\Users\\АДМИН\\IdeaProjects\\OOP\\LR2\\output\\serialized array function.bin"))) {
+            try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream("C:\\Users\\User\\IdeaProjects\\LRGit\\LR2\\output\\serialized array function.bin"))) {
                 double[] xValues = {1, 2, 3};
                 double[] yValues = {1.5, 2.5, 3.5};
 
@@ -22,14 +22,12 @@ public class ArrayTabulatedFunctionSerialization {
                 FunctionsIO.serialize(bufferedOutputStream, arrayFunc);
                 FunctionsIO.serialize(bufferedOutputStream, differenArrayFunc1);
                 FunctionsIO.serialize(bufferedOutputStream, differenArrayFunc2);
-
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
-            try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream("input/serialized array function.bin"))) {
+            try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream("C:\\Users\\User\\IdeaProjects\\LRGit\\LR2\\output\\serialized array function.bin"))) {
                 System.out.println(FunctionsIO.deserialize(bufferedInputStream));
                 System.out.println(FunctionsIO.deserialize(bufferedInputStream));
                 System.out.println(FunctionsIO.deserialize(bufferedInputStream));
