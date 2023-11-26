@@ -46,4 +46,17 @@ public class TabulatedDifferentialOperatorTest {
         assertEquals(1, func.getY(2));
         assertEquals(1, func.getY(3));
     }
+    @Test
+    public void deriveSynchronouslyTest2() {
+        double[] xValues = {2, 4, 6, 8};
+        double[] yValues = {1, 3, 5, 7};
+        LinkedListTabulatedFunctionFactory fact = new LinkedListTabulatedFunctionFactory();
+        TabulatedDifferentialOperator operation = new TabulatedDifferentialOperator(fact);
+        ArrayTabulatedFunction array = new ArrayTabulatedFunction(xValues, yValues);
+        TabulatedFunction differential_func = operation.deriveSynchronously(array);
+        assertEquals(1, differential_func.getY(0));
+        assertEquals(1, differential_func.getY(1));
+        assertEquals(1, differential_func.getY(2));
+        assertEquals(1, differential_func.getY(3));
+    }
 }

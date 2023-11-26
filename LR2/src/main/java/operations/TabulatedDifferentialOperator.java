@@ -1,5 +1,6 @@
 package operations;
 
+import concurrent.SynchronizedTabulatedFunction;
 import functions.Point;
 import functions.TabulatedFunction;
 import functions.factory.ArrayTabulatedFunctionFactory;
@@ -25,16 +26,25 @@ public class TabulatedDifferentialOperator implements DifferentialOperator<Tabul
     }
 
     public TabulatedFunction derive(TabulatedFunction function) {
-        Point[] pointsArr = TabulatedFunctionOperationService.asPoints(function);
-        double[] xValue = new double[pointsArr.length];
-        double[] yValue = new double[pointsArr.length];
+        Point[] arrayOfPoints = TabulatedFunctionOperationService.asPoints(function);
+        double[] xValue = new double[function.getCount()];
+        double[] yValue = new double[function.getCount()];
         int i = 0;
-        for (; i < (xValue.length - 1); ++i) {
-            xValue[i] = pointsArr[i].x;
-            yValue[i] = (pointsArr[i + 1].y - pointsArr[i].y) / (pointsArr[i + 1].x - pointsArr[i].x);
+        while (i < (xValue.length - 1)) {
+            xValue[i] = arrayOfPoints[i].x;
+            yValue[i] = (arrayOfPoints[i + 1].y - arrayOfPoints[i].y) / (arrayOfPoints[i + 1].x - arrayOfPoints[i].x);
+            i++;
         }
-        xValue[i] = pointsArr[i].x;
+        xValue[i] = arrayOfPoints[i].x;
         yValue[i] = yValue[i - 1];
         return factory.create(xValue, yValue);
+
+    }
+    public SynchronizedTabulatedFunction deriveSynchronously (TabulatedFunction function){
+        SynchronizedTabulatedFunction synchronizedFunction = (function instanceof SynchronizedTabulatedFunction) ?
+                (SynchronizedTabulatedFunction) function :
+                new SynchronizedTabulatedFunction(function);
+
+        return synchronizedFunction.doSynchronously(func -> new SynchronizedTabulatedFunction(derive(func)));
     }
 }

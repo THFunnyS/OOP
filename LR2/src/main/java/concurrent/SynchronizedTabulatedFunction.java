@@ -84,7 +84,20 @@ public class SynchronizedTabulatedFunction implements TabulatedFunction {
         }
     }
 
+    @Override
     public double apply(double x) {
-        return 0;
+        synchronized (delegator) {
+            return delegator.apply(x);
+        }
+    }
+
+    public interface Operation<T> {
+        T apply(SynchronizedTabulatedFunction func);
+    }
+
+    public <T> T doSynchronously(Operation<T> operation) {
+        synchronized (delegator) {
+            return operation.apply(this);
+        }
     }
 }
