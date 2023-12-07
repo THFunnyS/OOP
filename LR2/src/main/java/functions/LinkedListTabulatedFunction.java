@@ -1,6 +1,8 @@
 package functions;
 
 import exceptions.InterpolationException;
+
+import java.io.Serial;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Iterator;
@@ -8,8 +10,10 @@ import java.io.Serializable;
 
 
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Removable,Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     static class Node implements Serializable{
+        @Serial
         private static final long serialVersionUID = 1L;
         public Node next;
         public Node prev;
