@@ -1,102 +1,81 @@
 package ui;
 
-import javafx.application.Application;
-import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
+import functions.TabulatedFunction;
+import functions.factory.ArrayTabulatedFunctionFactory;
+import functions.factory.TabulatedFunctionFactory;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
+import java.awt.event.ActionListener;
 
-public class TabulatedFunctionController extends Application{
-    @FXML
-    private final TableView<Point> table = new TableView<>();
-    @FXML
-    private final TextField pointsField = new TextField();
-    @FXML
-    public Button createButton;
-    @FXML
-    public Label labelNumOfPoints;
-    @FXML
-    public AnchorPane pane;
-    @FXML
-    public TableColumn<Point, Double> xColumn;
-    @FXML
-    public TableColumn<Point, Double> yColumn;
+public class TabulatedFunctionController extends JFrame {
+    private JTable table;
+    private final JTextField numOfPoints;
+    private final DefaultTableModel tableModel;
 
-    void PointsEnter(ActionEvent event) throws IOException {
-        int size=Integer.parseInt(pointsField.getText());
-        try {
-            if (size <2) throw new IllegalArgumentException("Размер должен быть >=2");
-            for (int i=0;i<size;++i){
-                table.getItems().add(new Point());
+    public TabulatedFunctionController() {
+        super("Tabulated Function Creator");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        numOfPoints = new JTextField(10);
+        JButton createButton = new JButton("Create");
+        createButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                createTabulatedFunction();
             }
-            pane.setVisible(false);
-            table.setVisible(true);
-            createButton.setVisible(true);
-        }catch (IllegalArgumentException e){
+        });
+        tableModel = new DefaultTableModel();
+        // Создайте и настройте JTable
+        tableModel.addColumn("X");
+        tableModel.addColumn("Y");
+        table = new JTable(tableModel);
 
+
+        JPanel contentPane = new JPanel(new BorderLayout());
+        contentPane.setLayout(new FlowLayout());
+        contentPane.add(new JLabel("Number of Points:"), BorderLayout.NORTH);
+        contentPane.add(numOfPoints, BorderLayout.NORTH);
+        contentPane.add(createButton, BorderLayout.NORTH);
+        contentPane.add(new JScrollPane(table), BorderLayout.CENTER);
+        setContentPane(contentPane);
+        setVisible(true);
+    }
+
+    private void createTabulatedFunction() {
+        try {
+            int count = Integer.parseInt(numOfPoints.getText());
+            if (count < 2) JOptionPane.showMessageDialog(this, "Size must be >=2", "Error", JOptionPane.ERROR_MESSAGE);
+            else {
+                tableModel.setRowCount(0);
+                for (int i = 0; i < count; ++i) {
+                    Object[] rowData = new Object[2];
+                    rowData[0] = JOptionPane.showInputDialog("Enter value of X" + (i + 1));
+                    rowData[1] = JOptionPane.showInputDialog("Enter value of Y" + (i + 1));
+                    tableModel.addRow(rowData);
+                }
+                TabulatedFunctionFactory factory = new ArrayTabulatedFunctionFactory();
+                double[] xValues = new double[count];
+                double[] yValues = new double[count];
+
+                for (int i = 0; i < count; ++i) {
+                    xValues[i] = Double.parseDouble(tableModel.getValueAt(i, 0).toString());
+                    yValues[i] = Double.parseDouble(tableModel.getValueAt(i, 1).toString());
+                }
+
+                TabulatedFunction function = factory.create(xValues, yValues);
+                System.out.println("Tabulated function: " + function);
+
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Wrong input, try again", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Tabulated Function Creator");
-
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 10, 10, 10));
-        grid.setVgap(5);
-        grid.setHgap(5);
-
-        Label pointsLabel = new Label("Number of points:");
-        GridPane.setConstraints(pointsLabel, 0, 0);
-        grid.getChildren().add(pointsLabel);
-
-        GridPane.setConstraints(pointsField, 1, 0);
-        grid.getChildren().add(pointsField);
-
-        Button createButton = new Button("Create");
-        GridPane.setConstraints(createButton, 2, 0);
-        grid.getChildren().add(createButton);
-
-        TableColumn<Point, Double> xColumn = new TableColumn<>("X");
-        xColumn.setCellValueFactory(new PropertyValueFactory<>("x"));
-        xColumn.setMinWidth(100);
-
-        TableColumn<Point, Double> yColumn = new TableColumn<>("Y");
-        yColumn.setCellValueFactory(new PropertyValueFactory<>("y"));
-        yColumn.setMinWidth(100);
-
-        table.getColumns().addAll(xColumn, yColumn);
-        table.setPlaceholder(new Label("Enter the number of points and click Create"));
-
-        GridPane.setConstraints(table, 0, 1, 3, 1);
-        grid.getChildren().add(table);
-
-        createButton.setOnAction(e -> {
-            int points = Integer.parseInt(pointsField.getText());
-            for (int i = 0; i < points; i++) {
-                table.getItems().add(new Point());
-            }
-            pointsField.setDisable(true);
-            createButton.setDisable(true);
-        });
-
-        Scene scene = new Scene(grid, 400, 300);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        SwingUtilities.invokeLater(TabulatedFunctionController::new);
     }
 }
