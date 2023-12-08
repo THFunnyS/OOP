@@ -9,14 +9,9 @@ public class ExceptionCatcher {
     }
 
     private String ShowErrorMessage(Exception exception) {
-        return switch (exception) {
-            case NumberFormatException numberFormatException -> "Wrong input, try numbers";
-            case ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException -> "Out of given bounds";
-            case IllegalArgumentException illegalArgumentException -> "Wrong input, try again";
-            case null, default -> {
-                assert exception != null;
-                yield exception.getMessage();
-            }
-        };
+        if (exception instanceof NumberFormatException) return "Wrong input, try numbers";
+        else if (exception instanceof ArrayIndexOutOfBoundsException) return "Out of given bounds";
+        else if (exception instanceof IllegalArgumentException) return "Wrong input, try again";
+        else return exception.getMessage();
     }
 }
