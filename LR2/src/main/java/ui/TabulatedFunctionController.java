@@ -18,8 +18,8 @@ public class TabulatedFunctionController extends JFrame {
 
     public TabulatedFunctionController() {
         super("Tabulated Function Creator");
-        setSize(400, 300);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(470, 300);
+
         numOfPoints = new JTextField(10);
         JButton createButton = new JButton("Create");
         createButton.addActionListener(new ActionListener() {
