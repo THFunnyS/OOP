@@ -1,44 +1,56 @@
 package ui;
 
-import functions.factory.ArrayTabulatedFunctionFactory;
-import functions.factory.LinkedListTabulatedFunctionFactory;
-import functions.factory.TabulatedFunctionFactory;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Settings extends JFrame {
-    private final MainWindow mainWindow;
-    private final TabulatedFunctionFactory factory;
-    private boolean arrActive;
-    public Settings(MainWindow mainWindow,TabulatedFunctionFactory factory){
-        super("Settings");
-        setSize(400,300);
-        this.arrActive=true;
-        this.mainWindow = mainWindow;
-        this.factory = factory;
-        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+public class Settings extends JDialog {
+    private static boolean arrIsType = true;
+
+    public void setArrIsType(boolean arrIsType) {
+        Settings.arrIsType = arrIsType;
+    }
+
+    public static boolean getFuncType() {
+        return arrIsType;
+    }
+
+    public Settings(JFrame parent) {
+        super(parent, "Settings", true);
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout());
+        setResizable(false);
+
         JRadioButton arrayFactoryButton = new JRadioButton("Array");
         JRadioButton linkedListFactoryButton = new JRadioButton("Linked list");
         ButtonGroup group = new ButtonGroup();
         group.add(arrayFactoryButton);
         group.add(linkedListFactoryButton);
 
-        // Устанавливаем текущую фабрику в соответствии с текущим выбором пользователя
-        if (factory instanceof ArrayTabulatedFunctionFactory) {
-            arrayFactoryButton.setSelected(true);
-        } else if (factory instanceof LinkedListTabulatedFunctionFactory) {
-            linkedListFactoryButton.setSelected(true);
-        }
+        arrayFactoryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (arrayFactoryButton.isSelected()) {
+                    arrIsType = true;
+                }
+            }
+        });
 
-        // Создаем кнопку "Применить"
-        JButton applyButton = new JButton("Применить");
+        linkedListFactoryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (linkedListFactoryButton.isSelected()) {
+                    arrIsType = false;
+                }
+            }
+        });
+        JButton applyButton = new JButton("Apply");
         applyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                applySettings();
+                dispose();
             }
         });
 
@@ -47,16 +59,10 @@ public class Settings extends JFrame {
         contentPane.add(linkedListFactoryButton);
         contentPane.add(applyButton);
 
+        arrayFactoryButton.setSelected(arrIsType);
+        linkedListFactoryButton.setSelected(!arrIsType);
+
         setContentPane(contentPane);
-    }
-    private void applySettings() {
-        // Изменяем текущую фабрику в соответствии с выбором пользователя
-        if (factory != null) {
-            mainWindow.setFactory(factory);
-        }
-        // Закрываем окно настроек
-        dispose();
-        // Показываем главное окно
-        mainWindow.setVisible(true);
+        setVisible(true);
     }
 }

@@ -40,6 +40,26 @@ public class TabulatedDifferentialOperator implements DifferentialOperator<Tabul
         return factory.create(xValue, yValue);
 
     }
+
+    public TabulatedFunction derive2(TabulatedFunction function) {
+        double[] xValues = new double[function.getCount()];
+        double[] yValues = new double[function.getCount()];
+        double[] xValuesRes = new double[function.getCount()];
+        double[] yValuesRes = new double[function.getCount()];
+
+        for (int i = 0; i < function.getCount(); i++) {
+            xValues[i] = function.getX(i);
+            yValues[i] = function.getY(i);
+        }
+
+        for (int i = 0; i < function.getCount() - 1; i++) {
+            xValuesRes[i] = xValues[i];
+            yValuesRes[i] = (yValues[i + 1] - yValues[i]) / (xValues[i + 1] - xValues[i]);
+        }
+        xValuesRes[function.getCount() - 1] = xValues[function.getCount() - 1];
+        yValuesRes[function.getCount() - 1] = yValues[function.getCount() - 2];
+        return factory.create(xValuesRes, yValuesRes);
+    }
     public SynchronizedTabulatedFunction deriveSynchronously (TabulatedFunction function){
         SynchronizedTabulatedFunction synchronizedFunction = (function instanceof SynchronizedTabulatedFunction) ?
                 (SynchronizedTabulatedFunction) function :

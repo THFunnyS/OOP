@@ -1,8 +1,8 @@
 package ui;
 
-
 import functions.TabulatedFunction;
 import functions.factory.ArrayTabulatedFunctionFactory;
+import functions.factory.LinkedListTabulatedFunctionFactory;
 import functions.factory.TabulatedFunctionFactory;
 
 import javax.swing.*;
@@ -11,44 +11,76 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TabulatedFunctionController extends JFrame {
-    private JTable table;
+public class TabulatedFunctionController extends JDialog {
+    private static TabulatedFunction function;
+    private static TabulatedFunctionFactory functionFactory;
+    private JTable pointTable;
     private final JTextField numOfPoints;
     private final DefaultTableModel tableModel;
+    private boolean arrIsType;
+    private static boolean status;
 
-    public TabulatedFunctionController() {
-        super("Tabulated Function Creator");
+    public static TabulatedFunction getFunction(){
+        return function;
+    }
+
+    public static boolean getStatus(){
+        return status;
+    }
+
+    public void setStatus(boolean status){
+        this.status=status;
+    }
+
+    public TabulatedFunctionController(JFrame parent,boolean arrType) {
+        super(parent,"Tabulated Function Creator",true);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(470, 300);
-
-        numOfPoints = new JTextField(10);
+        arrIsType=arrType;
+        numOfPoints = new JTextField(5);
         JButton createButton = new JButton("Create");
+        setStatus(false);
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                createTabulatedFunction();
+                createTableFunction();
             }
         });
+        JButton createFunctionButton=new JButton("Create function");
+
+
         tableModel = new DefaultTableModel();
-        // Создайте и настройте JTable
         tableModel.addColumn("X");
         tableModel.addColumn("Y");
-        table = new JTable(tableModel);
-
+        pointTable = new JTable(tableModel);
 
         JPanel contentPane = new JPanel(new BorderLayout());
         contentPane.setLayout(new FlowLayout());
         contentPane.add(new JLabel("Number of Points:"), BorderLayout.NORTH);
         contentPane.add(numOfPoints, BorderLayout.NORTH);
         contentPane.add(createButton, BorderLayout.NORTH);
-        contentPane.add(new JScrollPane(table), BorderLayout.CENTER);
+        contentPane.add(createFunctionButton,BorderLayout.NORTH);
+        contentPane.add(new JScrollPane(pointTable), BorderLayout.CENTER);
         setContentPane(contentPane);
+
+
+        createFunctionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createTabulatedFunction();
+            }
+        });
+
         setVisible(true);
     }
 
-    private void createTabulatedFunction() {
+    private void createTableFunction() {
         try {
             int count = Integer.parseInt(numOfPoints.getText());
-            if (count < 2) JOptionPane.showMessageDialog(this, "Size must be >=2", "Error", JOptionPane.ERROR_MESSAGE);
+            if (count<2) {
+                ExceptionCatcher exception = new ExceptionCatcher(this, "Size must be >=2");
+            }
             else {
                 tableModel.setRowCount(0);
                 for (int i = 0; i < count; ++i) {
@@ -57,25 +89,25 @@ public class TabulatedFunctionController extends JFrame {
                     rowData[1] = JOptionPane.showInputDialog("Enter value of Y" + (i + 1));
                     tableModel.addRow(rowData);
                 }
-                TabulatedFunctionFactory factory = new ArrayTabulatedFunctionFactory();
-                double[] xValues = new double[count];
-                double[] yValues = new double[count];
-
-                for (int i = 0; i < count; ++i) {
-                    xValues[i] = Double.parseDouble(tableModel.getValueAt(i, 0).toString());
-                    yValues[i] = Double.parseDouble(tableModel.getValueAt(i, 1).toString());
-                }
-
-                TabulatedFunction function = factory.create(xValues, yValues);
-                System.out.println("Tabulated function: " + function);
-
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Wrong input, try again", "Error", JOptionPane.ERROR_MESSAGE);
+            ExceptionCatcher exception=new ExceptionCatcher(this,"Wrong input,try again!");
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(TabulatedFunctionController::new);
+    private void createTabulatedFunction(){
+        setStatus(true);
+        int count=Integer.parseInt(numOfPoints.getText());
+        double[] xValues = new double[count];
+        double[] yValues = new double[count];
+
+        for (int i = 0; i < count; ++i) {
+            xValues[i] = Double.parseDouble(tableModel.getValueAt(i, 0).toString());
+            yValues[i] = Double.parseDouble(tableModel.getValueAt(i, 1).toString());
+        }
+        functionFactory = arrIsType ? new ArrayTabulatedFunctionFactory():new LinkedListTabulatedFunctionFactory();
+        function =functionFactory.create(xValues, yValues);
+        System.out.println("Tabulated function: " + function);
+        dispose();
     }
 }
