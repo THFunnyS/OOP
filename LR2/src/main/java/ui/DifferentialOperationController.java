@@ -41,7 +41,7 @@ public class DifferentialOperationController extends JDialog {
         }
     }
     public DifferentialOperationController(JFrame parent,boolean arrType,LinkedList<TabulatedFunction> list){
-        super(parent,"Differential operations",true);
+        super(parent,"Найти производную",true);
         setSize(600, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -51,8 +51,10 @@ public class DifferentialOperationController extends JDialog {
         arrIsType=arrType;
 
         JPanel funcPanel=new JPanel();
-        funcPanel.setLayout(new BorderLayout());
-        JLabel functionsLabel = new JLabel("Select Function:");
+        funcPanel.setLayout(new FlowLayout());
+        JLabel functionsLabel = new JLabel("Выбрать функцию:");
+        functionsLabel.setFont(new Font("Times New Roman", Font.BOLD, 16));
+        functionsLabel.setHorizontalAlignment(JLabel.CENTER); //
 
         JComboBox<String> functionsComboBox;
         String[] functionNames = new String[listOfFunc.size()];
@@ -71,10 +73,15 @@ public class DifferentialOperationController extends JDialog {
                 function = map_Of_Functions.get(functionsComboBox.getSelectedItem());
             }
         });
-        JButton difOperationButton = new JButton("Differentiate");
+        JButton difOperationButton = new JButton("Найти производную");
+        difOperationButton.setFont(new Font("Times New Roman", Font.BOLD, 16));
+        difOperationButton.setHorizontalAlignment(JLabel.CENTER); //
 
-        JButton saveDerivativeButton = new JButton("Save");
-        saveDerivativeButton.setPreferredSize(new Dimension(67, 26));
+        JButton saveDerivativeButton = new JButton("Сохранить");
+        saveDerivativeButton.setPreferredSize(new Dimension(120, 30));
+        saveDerivativeButton.setFont(new Font("Times New Roman", Font.BOLD, 16));
+        saveDerivativeButton.setHorizontalAlignment(JLabel.CENTER); //
+
 
         funcPanel.add(functionsLabel);
         funcPanel.add(functionsComboBox);
@@ -83,7 +90,7 @@ public class DifferentialOperationController extends JDialog {
 
         JPanel resultPanel = new JPanel(new BorderLayout());
 
-        resultTableModel = new DifferentialOperationController.NonEditableTableModel(new String[]{"Function Name", "Type"}, 0);
+        resultTableModel = new DifferentialOperationController.NonEditableTableModel(new String[]{"Название функции", "Тип"}, 0);
         resultTable = new JTable(resultTableModel);
 
         resultPanel.add(resultTable);
@@ -117,9 +124,9 @@ public class DifferentialOperationController extends JDialog {
 
         resultTable.getSelectionModel().addListSelectionListener(e -> descriptionTable(derivativeDescriptionTextArea,row));
         derivativeDescriptionPanel.setPreferredSize(new Dimension(WIDTH, 100));
-        add(funcPanel, BorderLayout.NORTH);
-        add(resultPanel, BorderLayout.CENTER);
-        add(derivativeDescriptionPanel, BorderLayout.SOUTH);
+        add(funcPanel, BorderLayout.SOUTH);
+        add(resultPanel, BorderLayout.NORTH);
+        add(derivativeDescriptionPanel, BorderLayout.CENTER);
         setVisible(true);
     }
 
@@ -129,11 +136,11 @@ public class DifferentialOperationController extends JDialog {
             differentialOperator = new TabulatedDifferentialOperator(functionFactory);
             derivative = differentialOperator.derive2(function);
             list_of_derivative.add(derivative);
-            addFunctionToTable(derivative, "Derivative Tabulated Function");
+            addFunctionToTable(derivative, "Производная табулированной функции");
         }catch (NullPointerException e){
-            ExceptionCatcher exception=new ExceptionCatcher(this,"Function is null");
+            ExceptionCatcher exception=new ExceptionCatcher(this,"Функция равна нулю");
         }catch (ArrayIsNotSortedException e){
-            ExceptionCatcher exception=new ExceptionCatcher(this,"Array is not sorted");
+            ExceptionCatcher exception=new ExceptionCatcher(this,"Массив не отсортирован");
         }
     }
 
@@ -152,7 +159,7 @@ public class DifferentialOperationController extends JDialog {
             }
         }
         else {
-            ExceptionCatcher exception = new ExceptionCatcher(this, "Choose function");
+            ExceptionCatcher exception = new ExceptionCatcher(this, "Выберите функцию");
         }
     }
 
