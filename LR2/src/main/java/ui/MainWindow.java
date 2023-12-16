@@ -96,7 +96,7 @@ public class MainWindow extends JFrame {
 
         mathOperations.addActionListener(e -> openFunctionOperationController());
 
-        difOperations.addActionListener(e-> openDifferentialController());
+        difOperations.addActionListener(e -> openDifferentialController());
 
         mainFrame.getContentPane().add(BorderLayout.NORTH, menuBar);
 
@@ -111,7 +111,7 @@ public class MainWindow extends JFrame {
 
         int[] row = {-1};
         funcTable.getSelectionModel().addListSelectionListener(e -> {
-           descriptionTable(funcDescriptionText, row);
+            descriptionTable(funcDescriptionText, row);
         });
         funcTable.getSelectionModel().addListSelectionListener(e -> {
             int newRow = funcTable.getSelectedRow();
@@ -205,12 +205,12 @@ public class MainWindow extends JFrame {
         }
     }
 
-    private void openFunctionOperationController(){
-        FunctionOperationController creator=new FunctionOperationController(mainFrame,Settings.getFuncType(),MainWindow.GetFunctionList());
+    private void openFunctionOperationController() {
+        FunctionOperationController creator = new FunctionOperationController(mainFrame, Settings.getFuncType(), MainWindow.GetFunctionList());
     }
 
-    private void openDifferentialController(){
-        DifferentialOperationController creator=new DifferentialOperationController(mainFrame,Settings.getFuncType(),MainWindow.GetFunctionList());
+    private void openDifferentialController() {
+        DifferentialOperationController creator = new DifferentialOperationController(mainFrame, Settings.getFuncType(), MainWindow.GetFunctionList());
     }
 
     private void descriptionTable(JTextArea funcDescriptionText, int[] row) {
@@ -237,7 +237,6 @@ public class MainWindow extends JFrame {
     private void addFunctionToTable(TabulatedFunction function, String name) {
         defaultFuncTableModel.addRow(new String[]{name, function.getClass().getSimpleName()});
     }
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(MainWindow::new);

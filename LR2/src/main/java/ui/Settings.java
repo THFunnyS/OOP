@@ -57,9 +57,7 @@ public class Settings extends JDialog {
         contentPane.add(arrayFactoryButton);
         contentPane.add(linkedListFactoryButton);
 
-
         setContentPane(contentPane);
         setVisible(true);
     }
-
 }

@@ -20,24 +20,24 @@ public class TabulatedFunctionController extends JDialog {
     private boolean arrIsType;
     private static boolean status;
 
-    public static TabulatedFunction getFunction(){
+    public static TabulatedFunction getFunction() {
         return function;
     }
 
-    public static boolean getStatus(){
+    public static boolean getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status){
-        this.status=status;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
-    public TabulatedFunctionController(JFrame parent,boolean arrType) {
-        super(parent,"Табличная функции",true);
+    public TabulatedFunctionController(JFrame parent, boolean arrType) {
+        super(parent, "Табличная функции", true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(470, 300);
-        arrIsType=arrType;
+        arrIsType = arrType;
         numOfPoints = new JTextField(5);
         JButton createButton = new JButton("Создать");
         createButton.setFont(new Font("Times New Roman", Font.BOLD, 16));
@@ -49,7 +49,7 @@ public class TabulatedFunctionController extends JDialog {
                 createTableFunction();
             }
         });
-        JButton createFunctionButton=new JButton("Создать функцию");
+        JButton createFunctionButton = new JButton("Создать функцию");
         createFunctionButton.setFont(new Font("Times New Roman", Font.BOLD, 16));
         createFunctionButton.setHorizontalAlignment(JLabel.CENTER); //
 
@@ -68,10 +68,9 @@ public class TabulatedFunctionController extends JDialog {
         createFunctionButton.setHorizontalAlignment(JLabel.CENTER); //
         contentPane.add(numOfPoints, BorderLayout.NORTH);
         contentPane.add(createButton, BorderLayout.NORTH);
-        contentPane.add(createFunctionButton,BorderLayout.NORTH);
+        contentPane.add(createFunctionButton, BorderLayout.NORTH);
         contentPane.add(new JScrollPane(pointTable), BorderLayout.CENTER);
         setContentPane(contentPane);
-
 
         createFunctionButton.addActionListener(new ActionListener() {
             @Override
@@ -86,10 +85,9 @@ public class TabulatedFunctionController extends JDialog {
     private void createTableFunction() {
         try {
             int count = Integer.parseInt(numOfPoints.getText());
-            if (count<2) {
+            if (count < 2) {
                 ExceptionCatcher exception = new ExceptionCatcher(this, "Размер должен быть >=2");
-            }
-            else {
+            } else {
                 tableModel.setRowCount(0);
                 for (int i = 0; i < count; ++i) {
                     Object[] rowData = new Object[2];
@@ -99,22 +97,21 @@ public class TabulatedFunctionController extends JDialog {
                 }
             }
         } catch (NumberFormatException e) {
-            ExceptionCatcher exception=new ExceptionCatcher(this,"Неккоректный Вввод! Попробуйте еще раз!");
+            ExceptionCatcher exception = new ExceptionCatcher(this, "Неккоректный Вввод! Попробуйте еще раз!");
         }
     }
 
-    private void createTabulatedFunction(){
+    private void createTabulatedFunction() {
         setStatus(true);
-        int count=Integer.parseInt(numOfPoints.getText());
+        int count = Integer.parseInt(numOfPoints.getText());
         double[] xValues = new double[count];
         double[] yValues = new double[count];
-
         for (int i = 0; i < count; ++i) {
             xValues[i] = Double.parseDouble(tableModel.getValueAt(i, 0).toString());
             yValues[i] = Double.parseDouble(tableModel.getValueAt(i, 1).toString());
         }
-        functionFactory = arrIsType ? new ArrayTabulatedFunctionFactory():new LinkedListTabulatedFunctionFactory();
-        function =functionFactory.create(xValues, yValues);
+        functionFactory = arrIsType ? new ArrayTabulatedFunctionFactory() : new LinkedListTabulatedFunctionFactory();
+        function = functionFactory.create(xValues, yValues);
         System.out.println("Табличная функция: " + function);
         dispose();
     }

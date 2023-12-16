@@ -35,22 +35,24 @@ public class DifferentialOperationController extends JDialog {
         public NonEditableTableModel(Object[] columnNames, int rowCount) {
             super(columnNames, rowCount);
         }
+
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
         }
     }
-    public DifferentialOperationController(JFrame parent,boolean arrType,LinkedList<TabulatedFunction> list){
-        super(parent,"Найти производную",true);
+
+    public DifferentialOperationController(JFrame parent, boolean arrType, LinkedList<TabulatedFunction> list) {
+        super(parent, "Найти производную", true);
         setSize(600, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        LinkedList<TabulatedFunction> listOfFunc=list;
-        arrIsType=arrType;
+        LinkedList<TabulatedFunction> listOfFunc = list;
+        arrIsType = arrType;
 
-        JPanel funcPanel=new JPanel();
+        JPanel funcPanel = new JPanel();
         funcPanel.setLayout(new FlowLayout());
         JLabel functionsLabel = new JLabel("Выбрать функцию:");
         functionsLabel.setFont(new Font("Times New Roman", Font.BOLD, 16));
@@ -116,13 +118,13 @@ public class DifferentialOperationController extends JDialog {
 
         derivativeDescriptionPanel.setPreferredSize(new Dimension(WIDTH, 100));
 
-        difOperationButton.addActionListener(e->difOperationButtonFunctional());
+        difOperationButton.addActionListener(e -> difOperationButtonFunctional());
 
         saveDerivativeButton.addActionListener(e -> saveButtonFunctional());
 
-        int[] row={-1};
+        int[] row = {-1};
 
-        resultTable.getSelectionModel().addListSelectionListener(e -> descriptionTable(derivativeDescriptionTextArea,row));
+        resultTable.getSelectionModel().addListSelectionListener(e -> descriptionTable(derivativeDescriptionTextArea, row));
         derivativeDescriptionPanel.setPreferredSize(new Dimension(WIDTH, 100));
         add(funcPanel, BorderLayout.SOUTH);
         add(resultPanel, BorderLayout.NORTH);
@@ -130,35 +132,34 @@ public class DifferentialOperationController extends JDialog {
         setVisible(true);
     }
 
-    private void difOperationButtonFunctional(){
+    private void difOperationButtonFunctional() {
         functionFactory = arrIsType ? new ArrayTabulatedFunctionFactory() : new LinkedListTabulatedFunctionFactory();
         try {
             differentialOperator = new TabulatedDifferentialOperator(functionFactory);
             derivative = differentialOperator.derive2(function);
             list_of_derivative.add(derivative);
             addFunctionToTable(derivative, "Производная табулированной функции");
-        }catch (NullPointerException e){
-            ExceptionCatcher exception=new ExceptionCatcher(this,"Функция равна нулю");
-        }catch (ArrayIsNotSortedException e){
-            ExceptionCatcher exception=new ExceptionCatcher(this,"Массив не отсортирован");
+        } catch (NullPointerException e) {
+            ExceptionCatcher exception = new ExceptionCatcher(this, "Функция равна нулю");
+        } catch (ArrayIsNotSortedException e) {
+            ExceptionCatcher exception = new ExceptionCatcher(this, "Массив не отсортирован");
         }
     }
 
-    private void saveButtonFunctional(){
-        int row=resultTable.getSelectedRow();
-        if (row!=-1){
-            JFileChooser fileChooser=new JFileChooser();
-            int val=fileChooser.showSaveDialog(this);
-            if (val==JFileChooser.APPROVE_OPTION){
-                File file=fileChooser.getSelectedFile();
-                try{
-                    FunctionsIO.writeTabulatedFunction(new BufferedWriter(new FileWriter(file.getAbsolutePath())),derivative);
+    private void saveButtonFunctional() {
+        int row = resultTable.getSelectedRow();
+        if (row != -1) {
+            JFileChooser fileChooser = new JFileChooser();
+            int val = fileChooser.showSaveDialog(this);
+            if (val == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                try {
+                    FunctionsIO.writeTabulatedFunction(new BufferedWriter(new FileWriter(file.getAbsolutePath())), derivative);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-        }
-        else {
+        } else {
             ExceptionCatcher exception = new ExceptionCatcher(this, "Выберите функцию");
         }
     }

@@ -41,21 +41,22 @@ public class FunctionOperationController extends JDialog {
         public NonEditableTableModel(Object[] columnNames, int rowCount) {
             super(columnNames, rowCount);
         }
+
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
         }
     }
 
-    public FunctionOperationController(JFrame parent,boolean arrType,LinkedList<TabulatedFunction> list){
-        super(parent,"Арифметические операции",true);
-        setSize(800,600);
+    public FunctionOperationController(JFrame parent, boolean arrType, LinkedList<TabulatedFunction> list) {
+        super(parent, "Арифметические операции", true);
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
-        arrIsType=arrType;
-        LinkedList<TabulatedFunction> functionsList=list;
+        arrIsType = arrType;
+        LinkedList<TabulatedFunction> functionsList = list;
 
-        JPanel panel=new JPanel();
+        JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
         JPanel function1Panel = new JPanel();
@@ -210,28 +211,26 @@ public class FunctionOperationController extends JDialog {
         list_of_results = new LinkedList<TabulatedFunction>();
         operationDescriptionPanel.setPreferredSize(new Dimension(WIDTH, 100));
 
-        applyButton.addActionListener(e-> functionOperation(operationNames));
+        applyButton.addActionListener(e -> functionOperation(operationNames));
 
         saveButton.addActionListener(e -> saveOperation());
 
-        int[] row={-1};
+        int[] row = {-1};
 
-        operationResultTable.getSelectionModel().addListSelectionListener(e ->{
-            descriptionTable(operationDescriptionTextArea,row);
-                });
+        operationResultTable.getSelectionModel().addListSelectionListener(e -> {
+            descriptionTable(operationDescriptionTextArea, row);
+        });
         add(panel, BorderLayout.NORTH);
         add(operationResultPanel, BorderLayout.CENTER);
         add(operationDescriptionPanel, BorderLayout.SOUTH);
         setVisible(true);
-
-
     }
 
-    private void functionOperation(String[] operationNames){
+    private void functionOperation(String[] operationNames) {
         functionFactory = arrIsType ? new ArrayTabulatedFunctionFactory() : new LinkedListTabulatedFunctionFactory();
         try {
-            operation=new TabulatedFunctionOperationService(functionFactory);
-            if (Objects.equals(operationName, operationNames[0]  )) {
+            operation = new TabulatedFunctionOperationService(functionFactory);
+            if (Objects.equals(operationName, operationNames[0])) {
                 resultFunction = operation.add(function1, function2);
             }
             if (Objects.equals(operationName, operationNames[1])) {
@@ -244,30 +243,30 @@ public class FunctionOperationController extends JDialog {
                 resultFunction = operation.division(function1, function2);
             }
             list_of_results.add(resultFunction);
-            addFunctionToTable(resultFunction,"Результат "+operationName);
-        }catch (InconsistentFunctionsException e){
-            ExceptionCatcher exception=new ExceptionCatcher(this,"Разная длина");
+            addFunctionToTable(resultFunction, "Результат " + operationName);
+        } catch (InconsistentFunctionsException e) {
+            ExceptionCatcher exception = new ExceptionCatcher(this, "Разная длина");
         }
     }
 
-    private void saveOperation(){
-        int row=operationResultTable.getSelectedRow();
-        if (row!=-1){
-            JFileChooser fileChooser=new JFileChooser();
-            int val=fileChooser.showSaveDialog(this);
-            if (val==JFileChooser.APPROVE_OPTION){
-                File file=fileChooser.getSelectedFile();
-                try{
-                    FunctionsIO.writeTabulatedFunction(new BufferedWriter(new FileWriter(file.getAbsolutePath())),resultFunction);
+    private void saveOperation() {
+        int row = operationResultTable.getSelectedRow();
+        if (row != -1) {
+            JFileChooser fileChooser = new JFileChooser();
+            int val = fileChooser.showSaveDialog(this);
+            if (val == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                try {
+                    FunctionsIO.writeTabulatedFunction(new BufferedWriter(new FileWriter(file.getAbsolutePath())), resultFunction);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-        }
-        else {
+        } else {
             ExceptionCatcher exception = new ExceptionCatcher(this, "Выберите функцию");
         }
     }
+
     private void descriptionTable(JTextArea funcDescriptionText, int[] row) {
         int newRow = operationResultTable.getSelectedRow();
         if (newRow != -1 && newRow != row[0]) {
@@ -288,9 +287,8 @@ public class FunctionOperationController extends JDialog {
             funcDescriptionText.setText(funcView.toString());
         }
     }
+
     private void addFunctionToTable(TabulatedFunction function, String name) {
         operationResultTableModel.addRow(new String[]{name, function.getClass().getSimpleName()});
     }
-
-
 }

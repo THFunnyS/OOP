@@ -103,13 +103,10 @@ public class MathFunctionController extends JDialog {
         funcName = mathFuncList.getSelectedItem().toString();
         MathFunction mathFunction = mathFunctionHashMap.get(mathFuncList.getSelectedItem());
         try {
-            //String mathFunction = (String) mathFuncList.getSelectedItem();
             int count = Integer.parseInt(numOfPoints.getText());
             if (count < 2) {
                 ExceptionCatcher exception = new ExceptionCatcher(this, "Неправильный ввод");
-                //JOptionPane.showMessageDialog(this,"Wrong Input","Error",JOptionPane.ERROR_MESSAGE);
             } else {
-
                 double intervalB = Double.parseDouble(startInterval.getText());
                 double intervalE = Double.parseDouble(endInterval.getText());
                 functionFactory = arrIsType ? new ArrayTabulatedFunctionFactory() : new LinkedListTabulatedFunctionFactory();
@@ -119,7 +116,6 @@ public class MathFunctionController extends JDialog {
             }
         } catch (NumberFormatException e) {
             ExceptionCatcher exception = new ExceptionCatcher(this, "Неправильный ввод");
-
         }
     }
 }
