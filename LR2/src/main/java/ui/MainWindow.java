@@ -5,7 +5,6 @@ import functions.TabulatedFunction;
 import functions.factory.ArrayTabulatedFunctionFactory;
 import functions.factory.LinkedListTabulatedFunctionFactory;
 import functions.factory.TabulatedFunctionFactory;
-import ui3.NoticeJFrameWindow;
 import ui3.SettingsWindow;
 
 import javax.swing.*;
@@ -40,7 +39,6 @@ public class MainWindow extends JFrame {
     }
 
     public MainWindow() {
-        //super("Main Window");
         mainFrame = new JFrame();
         mainFrame.setTitle("Основное окно");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,9 +83,6 @@ public class MainWindow extends JFrame {
         operationMenu.add(mathOperations);
         operationMenu.add(difOperations);
 
-        //setLocationRelativeTo(null);
-        //defaultFuncTableModel.addColumn("Function");
-        //defaultFuncTableModel.addColumn("Type");
         defaultFuncTableModel = new NonEditableTableModel(new String[]{"Функция", "Тип"}, 0);
         funcTable = new JTable(defaultFuncTableModel);
         JScrollPane scrollPane = new JScrollPane(funcTable);
@@ -158,11 +153,11 @@ public class MainWindow extends JFrame {
                 try {
                     funcList.add(readTabulatedFunction(new BufferedReader(new FileReader(file.getAbsolutePath())), factory));
                     addFunctionToTable(readTabulatedFunction(new BufferedReader(new FileReader(file.getAbsolutePath())), factory), "Tabulated Function");
-                    NoticeJFrameWindow noticeJFrameWindow = new NoticeJFrameWindow(mainFrame, 0);
+
                 } catch (IOException ex) {
-                    NoticeJFrameWindow noticeJFrameWindow = new NoticeJFrameWindow(mainFrame, 4);
+                    ExceptionCatcher exception = new ExceptionCatcher(mainFrame, "Ошибка ввода/ввывода");
                 } catch (ArrayIsNotSortedException ex) {
-                    NoticeJFrameWindow noticeJFrameWindow = new NoticeJFrameWindow(mainFrame, 7);
+                    ExceptionCatcher exception = new ExceptionCatcher(mainFrame, "Таблица не отсортирована");
                 }
             }
         });
@@ -177,13 +172,12 @@ public class MainWindow extends JFrame {
                     File file = fileChooser.getSelectedFile();
                     try {
                         writeTabulatedFunction(new BufferedWriter(new FileWriter(file.getAbsolutePath())), selectedFunction);
-                        NoticeJFrameWindow noticeJFrameWindow = new NoticeJFrameWindow(mainFrame, 0);
                     } catch (IOException ex) {
-                        NoticeJFrameWindow noticeJFrameWindow = new NoticeJFrameWindow(mainFrame, 4);
+                        ExceptionCatcher exception = new ExceptionCatcher(mainFrame, "Ошибка ввода/ввывода");
                     }
                 }
             } else {
-                NoticeJFrameWindow noticeJFrameWindow = new NoticeJFrameWindow(mainFrame, 1);
+                ExceptionCatcher exception = new ExceptionCatcher(mainFrame, "Функция не найдена");
             }
         });
         sidePanel.add(funcDescription, BorderLayout.NORTH);
@@ -244,7 +238,7 @@ public class MainWindow extends JFrame {
         defaultFuncTableModel.addRow(new String[]{name, function.getClass().getSimpleName()});
     }
 
-    //private void addRow(TabulatedFunction function,)
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(MainWindow::new);
     }

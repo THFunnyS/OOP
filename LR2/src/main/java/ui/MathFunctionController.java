@@ -119,7 +119,7 @@ public class MathFunctionController extends JDialog {
             }
         } catch (NumberFormatException e) {
             ExceptionCatcher exception = new ExceptionCatcher(this, "Неправильный ввод");
-            //JOptionPane.showMessageDialog(this,"Wrong Input","Error",JOptionPane.ERROR_MESSAGE);
+
         }
     }
 }
