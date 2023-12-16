@@ -5,7 +5,6 @@ import functions.TabulatedFunction;
 import functions.factory.ArrayTabulatedFunctionFactory;
 import functions.factory.LinkedListTabulatedFunctionFactory;
 import functions.factory.TabulatedFunctionFactory;
-import ui3.SettingsWindow;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -98,6 +97,10 @@ public class MainWindow extends JFrame {
 
         difOperations.addActionListener(e -> openDifferentialController());
 
+        loadFunctionButton.addActionListener(e -> loadButtonFunctional());
+
+        saveFunctionButton.addActionListener(e -> saveButtonFunctional());
+
         mainFrame.getContentPane().add(BorderLayout.NORTH, menuBar);
 
         JPanel funcDescription = new JPanel(new BorderLayout());
@@ -140,46 +143,6 @@ public class MainWindow extends JFrame {
         mainFrame.add(scrollPane, BorderLayout.CENTER);
         mainFrame.setVisible(true);
 
-        loadFunctionButton.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
-            int returnVal = fileChooser.showOpenDialog(mainFrame);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-                if (!SettingsWindow.getTypeOfFabric()) {
-                    factory = new ArrayTabulatedFunctionFactory();
-                } else {
-                    factory = new LinkedListTabulatedFunctionFactory();
-                }
-                try {
-                    funcList.add(readTabulatedFunction(new BufferedReader(new FileReader(file.getAbsolutePath())), factory));
-                    addFunctionToTable(readTabulatedFunction(new BufferedReader(new FileReader(file.getAbsolutePath())), factory), "Tabulated Function");
-
-                } catch (IOException ex) {
-                    ExceptionCatcher exception = new ExceptionCatcher(mainFrame, "Ошибка ввода/ввывода");
-                } catch (ArrayIsNotSortedException ex) {
-                    ExceptionCatcher exception = new ExceptionCatcher(mainFrame, "Таблица не отсортирована");
-                }
-            }
-        });
-
-        saveFunctionButton.addActionListener(e -> {
-            int selectedRow = funcTable.getSelectedRow();
-            if (selectedRow != -1) {
-                TabulatedFunction selectedFunction = funcList.get(selectedRow);
-                JFileChooser fileChooser = new JFileChooser();
-                int returnVal = fileChooser.showSaveDialog(mainFrame);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooser.getSelectedFile();
-                    try {
-                        writeTabulatedFunction(new BufferedWriter(new FileWriter(file.getAbsolutePath())), selectedFunction);
-                    } catch (IOException ex) {
-                        ExceptionCatcher exception = new ExceptionCatcher(mainFrame, "Ошибка ввода/вывода");
-                    }
-                }
-            } else {
-                ExceptionCatcher exception = new ExceptionCatcher(mainFrame, "Функция не найдена");
-            }
-        });
         sidePanel.add(funcDescription, BorderLayout.NORTH);
         sidePanel.add(southPanel, BorderLayout.SOUTH);
         mainFrame.add(sidePanel, BorderLayout.SOUTH);
@@ -211,6 +174,42 @@ public class MainWindow extends JFrame {
 
     private void openDifferentialController() {
         DifferentialOperationController creator = new DifferentialOperationController(mainFrame, Settings.getFuncType(), MainWindow.GetFunctionList());
+    }
+
+    private void loadButtonFunctional() {
+        JFileChooser fileChooser = new JFileChooser();
+        int val = fileChooser.showOpenDialog(mainFrame);
+        if (val == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            factory = Settings.getFuncType() ? new ArrayTabulatedFunctionFactory() : new LinkedListTabulatedFunctionFactory();
+            try {
+                funcList.add(readTabulatedFunction(new BufferedReader(new FileReader(file.getAbsolutePath())), factory));
+                addFunctionToTable(readTabulatedFunction(new BufferedReader(new FileReader(file.getAbsolutePath())), factory), "Tabulated Function");
+            } catch (IOException e) {
+                ExceptionCatcher exception = new ExceptionCatcher(mainFrame, "Ошибка ввода/ввывода");
+            } catch (ArrayIsNotSortedException e) {
+                ExceptionCatcher exception = new ExceptionCatcher(mainFrame, "Таблица не отсортирована");
+            }
+        }
+    }
+
+    private void saveButtonFunctional() {
+        int row = funcTable.getSelectedRow();
+        if (row != -1) {
+            TabulatedFunction function = funcList.get(row);
+            JFileChooser fileChooser = new JFileChooser();
+            int val = fileChooser.showSaveDialog(mainFrame);
+            if (val == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                try {
+                    writeTabulatedFunction(new BufferedWriter(new FileWriter(file.getAbsolutePath())), function);
+                } catch (IOException e) {
+                    ExceptionCatcher exception = new ExceptionCatcher(mainFrame, "Ошибка ввода/вывода");
+                }
+            }
+        } else {
+            ExceptionCatcher exception = new ExceptionCatcher(mainFrame, "Функция не найдена");
+        }
     }
 
     private void descriptionTable(JTextArea funcDescriptionText, int[] row) {
