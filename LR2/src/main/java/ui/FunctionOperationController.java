@@ -245,7 +245,11 @@ public class FunctionOperationController extends JDialog {
             list_of_results.add(resultFunction);
             addFunctionToTable(resultFunction, "Результат " + operationName);
         } catch (InconsistentFunctionsException e) {
-            ExceptionCatcher exception = new ExceptionCatcher(this, "Разная длина");
+            ExceptionCatcher exception = new ExceptionCatcher(this, "Разная длина функций");
+        } catch (NullPointerException e) {
+            ExceptionCatcher exception = new ExceptionCatcher(this, "Функция не найдена");
+        } catch (ArithmeticException e) {
+            ExceptionCatcher exception = new ExceptionCatcher(this, "Деление на 0");
         }
     }
 
@@ -259,11 +263,11 @@ public class FunctionOperationController extends JDialog {
                 try {
                     FunctionsIO.writeTabulatedFunction(new BufferedWriter(new FileWriter(file.getAbsolutePath())), resultFunction);
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    ExceptionCatcher exception = new ExceptionCatcher(this, "Ошибка ввода/вывода");
                 }
             }
         } else {
-            ExceptionCatcher exception = new ExceptionCatcher(this, "Выберите функцию");
+            ExceptionCatcher exception = new ExceptionCatcher(this, "Функия не найдена");
         }
     }
 

@@ -140,7 +140,7 @@ public class DifferentialOperationController extends JDialog {
             list_of_derivative.add(derivative);
             addFunctionToTable(derivative, "Производная табулированной функции");
         } catch (NullPointerException e) {
-            ExceptionCatcher exception = new ExceptionCatcher(this, "Функция равна нулю");
+            ExceptionCatcher exception = new ExceptionCatcher(this, "Функция не найдена");
         } catch (ArrayIsNotSortedException e) {
             ExceptionCatcher exception = new ExceptionCatcher(this, "Массив не отсортирован");
         }
@@ -156,11 +156,11 @@ public class DifferentialOperationController extends JDialog {
                 try {
                     FunctionsIO.writeTabulatedFunction(new BufferedWriter(new FileWriter(file.getAbsolutePath())), derivative);
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    ExceptionCatcher exception = new ExceptionCatcher(this, "Ошибка ввода/вывода");
                 }
             }
         } else {
-            ExceptionCatcher exception = new ExceptionCatcher(this, "Выберите функцию");
+            ExceptionCatcher exception = new ExceptionCatcher(this, "Функция не найдена");
         }
     }
 

@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.ArrayIsNotSortedException;
 import functions.TabulatedFunction;
 import functions.factory.ArrayTabulatedFunctionFactory;
 import functions.factory.LinkedListTabulatedFunctionFactory;
@@ -97,7 +98,7 @@ public class TabulatedFunctionController extends JDialog {
                 }
             }
         } catch (NumberFormatException e) {
-            ExceptionCatcher exception = new ExceptionCatcher(this, "Неккоректный Вввод! Попробуйте еще раз!");
+            ExceptionCatcher exception = new ExceptionCatcher(this, "Некорректный ввод! Попробуйте еще раз!");
         }
     }
 
@@ -106,13 +107,21 @@ public class TabulatedFunctionController extends JDialog {
         int count = Integer.parseInt(numOfPoints.getText());
         double[] xValues = new double[count];
         double[] yValues = new double[count];
-        for (int i = 0; i < count; ++i) {
-            xValues[i] = Double.parseDouble(tableModel.getValueAt(i, 0).toString());
-            yValues[i] = Double.parseDouble(tableModel.getValueAt(i, 1).toString());
+        try {
+            for (int i = 0; i < count; ++i) {
+                xValues[i] = Double.parseDouble(tableModel.getValueAt(i, 0).toString());
+                yValues[i] = Double.parseDouble(tableModel.getValueAt(i, 1).toString());
+            }
+            functionFactory = arrIsType ? new ArrayTabulatedFunctionFactory() : new LinkedListTabulatedFunctionFactory();
+            function = functionFactory.create(xValues, yValues);
+            System.out.println("Табличная функция: " + function);
+            dispose();
+        } catch (NumberFormatException e) {
+            setStatus(false);
+            ExceptionCatcher exception = new ExceptionCatcher(this, "Некорректный ввод! Попробуйте еще раз!");
+        } catch (ArrayIsNotSortedException e) {
+            setStatus(false);
+            ExceptionCatcher exception = new ExceptionCatcher(this, "Таблица не отсортирована");
         }
-        functionFactory = arrIsType ? new ArrayTabulatedFunctionFactory() : new LinkedListTabulatedFunctionFactory();
-        function = functionFactory.create(xValues, yValues);
-        System.out.println("Табличная функция: " + function);
-        dispose();
     }
 }

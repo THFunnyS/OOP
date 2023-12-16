@@ -105,7 +105,7 @@ public class MathFunctionController extends JDialog {
         try {
             int count = Integer.parseInt(numOfPoints.getText());
             if (count < 2) {
-                ExceptionCatcher exception = new ExceptionCatcher(this, "Неправильный ввод");
+                ExceptionCatcher exception = new ExceptionCatcher(this, "Размер должен быть >=2");
             } else {
                 double intervalB = Double.parseDouble(startInterval.getText());
                 double intervalE = Double.parseDouble(endInterval.getText());
@@ -115,7 +115,7 @@ public class MathFunctionController extends JDialog {
                 dispose();
             }
         } catch (NumberFormatException e) {
-            ExceptionCatcher exception = new ExceptionCatcher(this, "Неправильный ввод");
+            ExceptionCatcher exception = new ExceptionCatcher(this, "Некорректный ввод! Попробуйте еще раз!");
         }
     }
 }

@@ -173,7 +173,7 @@ public class MainWindow extends JFrame {
                     try {
                         writeTabulatedFunction(new BufferedWriter(new FileWriter(file.getAbsolutePath())), selectedFunction);
                     } catch (IOException ex) {
-                        ExceptionCatcher exception = new ExceptionCatcher(mainFrame, "Ошибка ввода/ввывода");
+                        ExceptionCatcher exception = new ExceptionCatcher(mainFrame, "Ошибка ввода/вывода");
                     }
                 }
             } else {
